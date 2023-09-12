@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     profileImageContainer:{
 
 
-        
+
     },
 
     profileImage: {
@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
     },
 
     stats:{
-        width: 50,
-        height: 50,
+        width: 80,
+        height: 80,
         borderWidth:1,
     }
 })
