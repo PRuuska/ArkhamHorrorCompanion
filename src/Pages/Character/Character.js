@@ -7,27 +7,64 @@ import { styleProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 function Character() {
     return (
         <PageContainer>
-            <View>
+            <View style={{alignItems:'center'}}>
                 <Image style={styles.profileImage} source={require("../../assets/adaptive-icon.png")}></Image>
+                <Text style={{marginTop:10}}>Character Name</Text>
             </View>
 
-            <View>
-                <Text>Character Name</Text>
-            </View>
-
-            <View style={styles.statsContainer}>
-
+            <View style={styles.healthContainer}>
                 <View>
                     <Text>Health</Text>
-                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>    
+                    <Image style={styles.healthStats} source={require("../../assets/adaptive-icon.png")}/>    
                 </View>
 
                 <View>
                     <Text>Sanity</Text>
+                    <Image style={styles.healthStats} source={require("../../assets/adaptive-icon.png")}/>
+                </View>
+            </View>
+
+            <View style={styles.statsContainer}>
+            <View style={{alignItems: 'center'}}>
+            <Text>Observation</Text>
+
                     <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
                 </View>
-               
+
+                <View style={{alignItems: 'center'}}>
+                <Text>Observation</Text>
+
+                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
+                </View>
+
+                <View style={{alignItems: 'center'}}>
+                <Text>Observation</Text>
+
+                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
+                </View>
             </View>
+
+
+            <View style={styles.statsContainer}>
+                <View style={{alignItems: 'center'}}>
+                    <Text>Observation</Text>
+                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
+                </View>
+
+                <View style={{alignItems: 'center'}}>
+                <Text>Observation</Text>
+
+                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
+                </View>
+
+                <View style={{alignItems: 'center'}}>
+                <Text>Observation</Text>
+
+                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
+                </View>
+            </View>
+
+
         </PageContainer>
     );
 }
@@ -48,14 +85,29 @@ const styles = StyleSheet.create({
             marginTop:10
     },
 
-    statsContainer:{
+    healthContainer:{
+        marginTop:10,
         flexDirection:'row',
         justifyContent:'space-around'
     },
 
-    stats:{
-        width: 80,
+    healthStats:{
+        width: 80 ,
         height: 80,
         borderWidth:1,
+    },
+
+    statsContainer:{
+        textAlign:'center',
+        marginTop:30,
+        flexDirection:'row',
+        justifyContent:'space-around'
+
+    },
+
+    stats:{
+        width:70,
+        height:70,
+        borderWidth:1
     }
 })
