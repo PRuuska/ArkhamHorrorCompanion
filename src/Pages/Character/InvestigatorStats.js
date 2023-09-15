@@ -4,7 +4,7 @@ import { Image, Text, View, StyleSheet } from 'react-native';
 import PageContainer from '../../Components/PageContainer';
 import { styleProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 
-function Character() {
+function InvestigatorStats() {
     return (
         <PageContainer>
             <View style={{alignItems:'center'}}>
@@ -13,12 +13,15 @@ function Character() {
             </View>
 
             <View style={styles.healthContainer}>
-                <View>
+                <View style={{alignItems: 'center'}}>
                     <Text>Health</Text>
                     <Image style={styles.healthStats} source={require("../../assets/adaptive-icon.png")}/>    
                 </View>
-
-                <View>
+                    <View style={{alignItems: 'center'}}>
+                    <Text>Money</Text>
+                    <Image style={styles.healthStats} source={require("../../assets/adaptive-icon.png")}/>
+                </View>
+                    <View style={{alignItems: 'center'}}>
                     <Text>Sanity</Text>
                     <Image style={styles.healthStats} source={require("../../assets/adaptive-icon.png")}/>
                 </View>
@@ -26,19 +29,18 @@ function Character() {
 
             <View style={styles.statsContainer}>
             <View style={{alignItems: 'center'}}>
-            <Text>Observation</Text>
+                <Text>Focus</Text>
+                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
+                </View>
+
+                <View style={{alignItems: 'center'}}>
+                <Text>Lore</Text>
 
                     <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
                 </View>
 
                 <View style={{alignItems: 'center'}}>
-                <Text>Observation</Text>
-
-                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
-                </View>
-
-                <View style={{alignItems: 'center'}}>
-                <Text>Observation</Text>
+                <Text>Influence</Text>
 
                     <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
                 </View>
@@ -52,13 +54,13 @@ function Character() {
                 </View>
 
                 <View style={{alignItems: 'center'}}>
-                <Text>Observation</Text>
+                <Text>Strength</Text>
 
                     <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
                 </View>
 
                 <View style={{alignItems: 'center'}}>
-                <Text>Observation</Text>
+                <Text>Will</Text>
 
                     <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
                 </View>
@@ -69,7 +71,7 @@ function Character() {
     );
 }
 
-export default Character;
+export default InvestigatorStats;
 
 const styles = StyleSheet.create({
     profileImageContainer:{
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
 
     statsContainer:{
         textAlign:'center',
-        marginTop:30,
+        marginTop:80,
         flexDirection:'row',
         justifyContent:'space-around'
 

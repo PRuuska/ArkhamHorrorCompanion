@@ -2,7 +2,7 @@ import React from 'react';
 import PageContainer from '../../Components/PageContainer';
 import { Text } from 'react-native';
 
-function CharacterDetails() {
+function InvestigatorDetails() {
     return (
         <PageContainer>
             <Text>
@@ -13,4 +13,4 @@ function CharacterDetails() {
     );
 }
 
-export default CharacterDetails;
+export default InvestigatorDetails;
