@@ -1,0 +1,238 @@
+
+    [
+      {
+        "id": 1,
+        "name": "Agnes Baker",
+        "occupation": "The Waitress",
+        "traits": ["Mystic", "Outsider"],
+        "stats": {
+          "health": 6,
+          "sanity": 6,
+          "lore": 2,
+          "will": 4,
+          "influence": 2,
+          "observation": 3,
+          "strength": 3,
+          "focus": 2,
+          "money": 2
+        },
+        "special_ability": "Dark Insight: Once per round, you may spend 1 Clue to reroll 1 die when resolving a test.",
+        "starting_equipment": ["Cursed Luck", "Burning Man Tattoo"]
+      },
+      {
+        "id": 2,
+        "name": "Calvin Wright",
+        "occupation": "The Haunted",
+        "traits": ["Sorcerer", "Touched"],
+        "stats": {
+          "health": 5,
+          "sanity": 5,
+          "lore": 2,
+          "will": 5,
+          "influence": 2,
+          "observation": 2,
+          "strength": 3,
+          "focus": 2,
+          "money": 2
+        },
+        "special_ability": "Dark Pact: At the start of the game, gain 2 Dark Pact Conditions.",
+        "starting_equipment": ["Haunting Hymn"]
+      },
+      {
+        "id": 3,
+        "name": "Daniela Reyes",
+        "occupation": "The Mechanic",
+        "traits": ["Mechanic", "Survivor"],
+        "stats": {
+          "health": 6,
+          "sanity": 4,
+          "lore": 2,
+          "will": 3,
+          "influence": 4,
+          "observation": 2,
+          "strength": 3,
+          "focus": 2,
+          "money": 2
+        },
+        "special_ability": "Quick Repair: Once per round, you may perform a rest action to recover 1 Sanity or 1 Health.",
+        "starting_equipment": ["Toolbox", "Motorcycle"]
+      },
+      {
+        "id": 4,
+        "name": "Dexter Drake",
+        "occupation": "The Magician",
+        "traits": ["Magician", "Performer"],
+        "stats": {
+          "health": 5,
+          "sanity": 7,
+          "lore": 2,
+          "will": 4,
+          "influence": 3,
+          "observation": 2,
+          "strength": 3,
+          "focus": 2,
+          "money": 2
+        },
+        "special_ability": "Summoning: Once per round, you may spend 1 Clue to perform a Summoning action.",
+        "starting_equipment": ["Spellbook", "Magic Wand"]
+      },
+      {
+        "name": "Jenny Barnes",
+        "occupation": "The Dilettante",
+        "traits": ["Socialite", "Performer"],
+        "stats": {
+          "health": 6,
+          "sanity": 6,
+          "lore": 2,
+          "will": 4,
+          "influence": 3,
+          "observation": 3,
+          "strength": 3,
+          "focus": 2,
+          "money": 2
+        },
+        "special_ability": "Lucky Cigarette Case: Once per round, you may spend 1 Clue to re-roll 1 die when resolving a test.",
+        "starting_equipment": ["Lucky Cigarette Case", "Elder Sign Pendant"]
+      },
+      {
+        "id": 5,
+        "name": "Marie Lambeau",
+        "occupation": "The Entertainer",
+        "traits": ["Performer", "Occultist"],
+        "stats": {
+          "health": 6,
+          "sanity": 6,
+          "lore": 2,
+          "will": 4,
+          "influence": 4,
+          "observation": 3,
+          "strength": 2,
+          "focus": 2,
+          "money": 2
+        },
+        "special_ability": "Ritual: Once per round, when you spend 1 or more Clues to reroll dice, you may reroll 1 additional die for each Clue spent (maximum 3 additional dice).",
+        "starting_equipment": ["Cursed Violin", "Occult Diary"]
+      },
+      {
+        "id": 6,
+        "name": "Michael McGlen",
+        "occupation": "The Gangster",
+        "traits": ["Criminal", "Tough Guy"],
+        "stats": {
+          "health": 8,
+          "sanity": 4,
+          "lore": 2,
+          "will": 3,
+          "influence": 3,
+          "observation": 2,
+          "strength": 4,
+          "focus": 2,
+          "money": 2
+
+        },
+        "special_ability": "Intimidate: Once per round, you may spend 1 Clue to choose an investigator in your space and have them move 1 space.",
+        "starting_equipment": ["Tommy Gun", "Brass Knuckles"]
+      },
+      {
+        "id": 7,
+        "name": "Minh Thi Phan",
+        "occupation": "The Secretary",
+        "traits": ["Clergy", "Survivor"],
+        "stats": {
+          "health": 5,
+          "sanity": 7,
+          "lore": 2,
+          "will": 4,
+          "influence": 3,
+          "observation": 2,
+          "strength": 2,
+          "focus": 2,
+          "money": 2
+
+        },
+        "special_ability": "Teamwork: Once per round, when you or an investigator in your space performs a Rest action, you or that investigator recovers 1 additional Health or Sanity.",
+        "starting_equipment": ["Studious", "Translate"]
+      },
+      {
+        "id": 8,
+        "name": "Norman Withers",
+        "occupation": "The Astronomer",
+        "traits": ["Scientist", "Scholar"],
+        "stats": {
+          "health": 5,
+          "sanity": 7,
+          "lore": 2,
+          "will": 4,
+          "influence": 2,
+          "observation": 4,
+          "strength": 2,
+          "focus": 2,
+          "money": 2
+
+        },
+        "special_ability": "Stargazing: Once per round, you may perform a Rest action to gain 1 Clue.",
+        "starting_equipment": ["Telescope", "Astronomy Book"]
+      },
+      {
+        "id": 8,
+        "name": "Rex Murphy",
+        "occupation": "The Reporter",
+        "traits": ["Reporter", "Tough Guy"],
+        "stats": {
+          "health": 6,
+          "sanity": 5,
+          "lore": 2,
+          "will": 4,
+          "influence": 3,
+          "observation": 3,
+          "strength": 3,
+          "focus": 2,
+          "money": 2
+
+        },
+        "special_ability": "Investigative Reporting: Once per round, you may spend 1 Clue to gain 1 additional Clue.",
+        "starting_equipment": ["Notepad", "Camera"]
+      },
+      {
+        "id": 9,
+        "name": "Tommy Muldoon",
+        "occupation": "The Rookie Cop",
+        "traits": ["Agency", "Tough Guy"],
+        "stats": {
+          "health": 7,
+          "sanity": 5,
+          "lore": 2,
+          "will": 3,
+          "influence": 3,
+          "observation": 3,
+          "strength": 3,
+          "focus": 2,
+          "money": 2
+
+        },
+        "special_ability": "Backup: Once per round, when you are on a space with a Monster, you may gain 1 Clue and then move to a connecting space.",
+        "starting_equipment": ["Police Badge", "Baton"]
+      },
+      {
+        "id": 10,
+        "name": "Wendy Adams",
+        "occupation": "The Urchin",
+        "traits": ["Criminal", "Orphan"],
+        "stats": {
+          "health": 4,
+          "sanity": 6,
+          "lore": 2,
+          "will": 3,
+          "influence": 4,
+          "observation": 5,
+          "strength": 2,
+          "focus": 2,
+          "money": 2
+
+        },
+        "special_ability": "Luck: Once per round, you may reroll 1 die when resolving a test.",
+        "starting_equipment": ["Bottle", "Resourceful"]
+      }
+    ]
+  
+  

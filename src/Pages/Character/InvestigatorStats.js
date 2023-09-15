@@ -1,69 +1,98 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Image, Text, View, StyleSheet } from 'react-native';
+import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import PageContainer from '../../Components/PageContainer';
-import { styleProps } from 'react-native-web/dist/cjs/modules/forwardedProps';
 
-function InvestigatorStats() {
+function InvestigatorStats({ route }) {
+
+    //investigator passed from list
+    const { item } = route.params;
+
+    const onStatPressHandler = (statValue) =>{
+        console.log(statValue)
+
+    }
+
     return (
         <PageContainer>
             <View style={{alignItems:'center'}}>
                 <Image style={styles.profileImage} source={require("../../assets/adaptive-icon.png")}></Image>
-                <Text style={{marginTop:10}}>Character Name</Text>
+                <Text style={{marginTop:10}}>{item.name}</Text>
             </View>
 
             <View style={styles.healthContainer}>
-                <View style={{alignItems: 'center'}}>
+                <TouchableOpacity 
+                    tyle={{alignItems: 'center'}}
+                    onPress={() => onStatPressHandler(item.stats.health)}>
                     <Text>Health</Text>
-                    <Image style={styles.healthStats} source={require("../../assets/adaptive-icon.png")}/>    
-                </View>
-                    <View style={{alignItems: 'center'}}>
+                    <View style={styles.stats}>
+                        <Text>{item.stats.health}</Text>
+                    </View>
+                </TouchableOpacity>
+ 
+                <View style={{alignItems: 'center'}}>
                     <Text>Money</Text>
-                    <Image style={styles.healthStats} source={require("../../assets/adaptive-icon.png")}/>
+                    <View style={styles.stats}>
+                        <Text>1</Text>
+                    </View>
                 </View>
-                    <View style={{alignItems: 'center'}}>
+
+                <View style={{alignItems: 'center'}}>
                     <Text>Sanity</Text>
-                    <Image style={styles.healthStats} source={require("../../assets/adaptive-icon.png")}/>
+                    <View style={styles.stats}>
+                        <Text>{item.stats.sanity}</Text>
+                    </View>
                 </View>
             </View>
 
             <View style={styles.statsContainer}>
-            <View style={{alignItems: 'center'}}>
-                <Text>Focus</Text>
-                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
+                <View style={{alignItems: 'center'}}>
+                    <Text>Focus</Text>
+                    <View style={styles.stats}>
+                        <Text>{item.stats.focus}</Text>
+                    </View>        
                 </View>
 
                 <View style={{alignItems: 'center'}}>
-                <Text>Lore</Text>
-
-                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
+                    <Text>Lore</Text>
+                    <View style={styles.stats}>
+                        <Text>{item.stats.lore}</Text>
+                    </View>
                 </View>
 
-                <View style={{alignItems: 'center'}}>
-                <Text>Influence</Text>
-
-                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
-                </View>
-            </View>
-
-
-            <View style={styles.statsContainer}>
-                <View style={{alignItems: 'center'}}>
-                    <Text>Observation</Text>
-                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
+                    <View style={{alignItems: 'center'}}>
+                        <Text>Influence</Text>
+                        <View style={styles.stats}>
+                            <Text>{item.stats.influence}</Text>
+                        </View>
+                    </View>
                 </View>
 
-                <View style={{alignItems: 'center'}}>
-                <Text>Strength</Text>
 
-                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
-                </View>
+                <View style={styles.statsContainer}>
+                    <View style={{alignItems: 'center'}}>
+                        <Text>Observation</Text>
+                        <View style={styles.stats}>
+                            <Text>{item.stats.observation}</Text>
+                        </View>
+                    </View>
 
-                <View style={{alignItems: 'center'}}>
-                <Text>Will</Text>
+                    <View style={{alignItems: 'center'}}>
+                        <Text>Strength</Text>
 
-                    <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
-                </View>
+                        <View style={styles.stats}>
+                            <Text>{item.stats.strength}</Text>
+                        </View>
+
+                    </View>
+
+                    <View style={{alignItems: 'center'}}>
+                        <Text>Will</Text>
+
+                        <View style={styles.stats}>
+                            <Text>{item.stats.will}</Text>
+                        </View>
+                    </View>
             </View>
 
 
@@ -107,9 +136,12 @@ const styles = StyleSheet.create({
 
     },
 
+
     stats:{
-        width:70,
-        height:70,
-        borderWidth:1
+        borderWidth:1,
+        alignItems: 'center', 
+        width:80,
+        height: 80, 
+        justifyContent:'center'
     }
 })

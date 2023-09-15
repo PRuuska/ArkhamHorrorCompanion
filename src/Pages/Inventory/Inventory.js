@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Inventory(props) {
+function Inventory({navigation}) {
     return (
         <div>
             

@@ -10,78 +10,18 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
-import PageContainer from '../../Components/PageContainer';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import Investigators from '../../Data/Investigator/Investigators.json'
 
 function InvestigatorsList({navigation}) {
 
-    const persons = [
-        {
-          id: "1",
-          name: "Michael McGlen",
-        },
-        {
-          id: "2",
-          name: "Winston Orn",
-        },
-        {
-          id: "3",
-          name: "Carlton Collins",
-        },
-        {
-          id: "4",
-          name: "Malcolm Labadie",
-        },
-        {
-          id: "5",
-          name: "Michelle Dare",
-        },
-        {
-          id: "6",
-          name: "Carlton Zieme",
-        },
-        {
-          id: "7",
-          name: "Jessie Dickinson",
-        },
-        {
-          id: "8",
-          name: "Julian Gulgowski",
-        },
-        {
-          id: "9",
-          name: "Ellen Veum",
-        },
-        {
-          id: "10",
-          name: "Lorena Rice",
-        },
-      
-        {
-          id: "11",
-          name: "Carlton Zieme",
-        },
-        {
-          id: "12",
-          name: "Jessie Dickinson",
-        },
-        {
-          id: "13",
-          name: "Julian Gulgowski",
-        },
-        {
-          id: "14",
-          name: "Ellen Veum",
-        },
-        {
-          id: "15",
-          name: "Lorena Rice",
-        },
-      ];
+      const persons = require('../../Data/Investigator/Investigators.json');
 
-      const onClick = (id) => {
-        navigation.navigate('InvestigatorStats')
+      console.log(persons)
+
+      const onClick = (item) => {
+        console.log(item)
+        navigation.navigate('InvestigatorStats',{item})
       }
         
         return (
@@ -89,7 +29,7 @@ function InvestigatorsList({navigation}) {
                 <FlatList 
                     data={persons}
                     renderItem={({ item }) =>
-                        <TouchableOpacity onPress={() => onClick(item.id)}>
+                        <TouchableOpacity onPress={() => onClick(item)}>
                             <View style={styles.itemContainer}>
                                 <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
 
