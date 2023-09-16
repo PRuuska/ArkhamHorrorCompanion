@@ -33,8 +33,11 @@ function InvestigatorsList({navigation}) {
                             <View style={styles.itemContainer}>
                                 <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
 
-                                <Text style={styles.item}>{item.name}</Text>
-                                
+                                <View>
+                                  <Text style={styles.InvestigatorTitle}>{item.name}</Text>
+                                  <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
+                                </View>
+
                             </View>
 
                         </TouchableOpacity>
@@ -62,9 +65,17 @@ function InvestigatorsList({navigation}) {
             borderBottomWidth:1,
 
           },
-          item: {
-            padding: 20,
+          InvestigatorTitle: {
+            paddingLeft: 20,
+            paddingBottom: 5,
             fontSize: 15,
+            marginTop: 5,
+          },
+
+          InvestigatorJob: {
+            paddingLeft: 20,
+            paddingBottom: 5,
+            fontSize: 12,
             marginTop: 5,
           },
 
