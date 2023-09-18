@@ -10,20 +10,30 @@ function InvestigatorStats({ route }) {
     const [modalVisible,setModalVisible] = useState(false)
 
     const [statTitle, setStatTitle] = useState("");
-    const [statValue, setStatValue] = useState();
+    const [statValue, setStatValue] = useState(0);
 
-    const onStatPressHandler = (stats, statTitle) =>{
+    const [health, setHealth] = useState(item.stats.health);
+    const [sanity, setSanity] = useState(item.stats.sanity);
+    const [money, setMoney] = useState(item.stats.money);
+    const [focus, setFocus] = useState(item.stats.focus);
+    const [lore, setLore] = useState(item.stats.lore);
+    const [influence, setInfluence] = useState(item.stats.influence);
+    const [observation, setObservation] = useState(item.stats.observation);
+    const [strength, setStrength] = useState(item.stats.strength);
+    const [will, setWill] = useState(item.stats.will);
+
+    const onStatPressHandler = (statValue, statTitle) =>{
 
         const statValues = {
-            Health: stats.health,
-            Sanity: stats.sanity,
-            Money: stats.money,
-            Lore: stats.lore,
-            Influence: stats.influence,
-            Observation: stats.observation,
-            Strength: stats.strength,
-            Will: stats.will,
-            Focus: stats.focus,
+            Health: health,
+            Sanity: sanity,
+            Money: money,
+            Lore: lore,
+            Influence: influence,
+            Observation: observation,
+            Strength: strength,
+            Will: will,
+            Focus: focus,
           };
         
           setStatTitle(statTitle);
@@ -31,8 +41,58 @@ function InvestigatorStats({ route }) {
       
         setModalVisible(!modalVisible);
 
-
     }
+
+    const Increase = (statValue, statTitle) => {
+
+        const statSetters = {
+            Health: setHealth,
+            Sanity: setSanity,
+            Money: setMoney,
+            Focus: setFocus,
+            Lore: setLore,
+            Influence: setInfluence,
+            Obervation: setObservation,
+            Strength: setStrength,
+            Will: setWill,
+            // Add more stat titles and setters here if needed
+          };
+        
+          // Check if the statTitle exists in the map
+          if (statSetters.hasOwnProperty(statTitle)) {
+            const newval = statValue + 1;
+            setStatValue(newval);
+            statSetters[statTitle](newval);
+          }
+
+  }
+
+  const Decrease = (statValue, statTitle) => {
+
+    const statSetters = {
+        Health: setHealth,
+        Sanity: setSanity,
+        Money: setMoney,
+        Focus: setFocus,
+        Lore: setLore,
+        Influence: setInfluence,
+        Obervation: setObservation,
+        Strength: setStrength,
+        Will: setWill,
+        // Add more stat titles and setters here if needed
+      };
+    
+      // Check if the statTitle exists in the map
+      if (statSetters.hasOwnProperty(statTitle)) {
+        const newval = statValue - 1;
+        setStatValue(newval);
+        statSetters[statTitle](newval);
+      }
+
+}
+
+
+    
 
     return (
         <PageContainer>
@@ -50,7 +110,7 @@ function InvestigatorStats({ route }) {
 
                     <Text>Health</Text>
                     <View style={styles.stats}>
-                        <Text>{item.stats.health}</Text>
+                        <Text>{health}</Text>
                     </View>
 
                 </TouchableOpacity>
@@ -61,7 +121,7 @@ function InvestigatorStats({ route }) {
                     
                     <Text>Money</Text>
                     <View style={styles.stats}>
-                        <Text>{item.stats.money}</Text>
+                        <Text>{money}</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -71,7 +131,7 @@ function InvestigatorStats({ route }) {
 
                     <Text>Sanity</Text>
                     <View style={styles.stats}>
-                        <Text>{item.stats.sanity}</Text>
+                        <Text>{sanity}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -84,7 +144,7 @@ function InvestigatorStats({ route }) {
 
                     <Text>Focus</Text>
                     <View style={styles.stats}>
-                        <Text>{item.stats.focus}</Text>
+                        <Text>{focus}</Text>
                     </View>        
                 </TouchableOpacity>
 
@@ -94,7 +154,7 @@ function InvestigatorStats({ route }) {
 
                     <Text>Lore</Text>
                     <View style={styles.stats}>
-                        <Text>{item.stats.lore}</Text>
+                        <Text>{lore}</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -104,7 +164,7 @@ function InvestigatorStats({ route }) {
 
                         <Text>Influence</Text>
                         <View style={styles.stats}>
-                            <Text>{item.stats.influence}</Text>
+                            <Text>{influence}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -117,7 +177,7 @@ function InvestigatorStats({ route }) {
 
                         <Text>Observation</Text>
                         <View style={styles.stats}>
-                            <Text>{item.stats.observation}</Text>
+                            <Text>{observation}</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -128,7 +188,7 @@ function InvestigatorStats({ route }) {
                         <Text>Strength</Text>
 
                         <View style={styles.stats}>
-                            <Text>{item.stats.strength}</Text>
+                            <Text>{strength}</Text>
                         </View>
 
                     </TouchableOpacity>
@@ -140,36 +200,48 @@ function InvestigatorStats({ route }) {
                         <Text>Will</Text>
 
                         <View style={styles.stats}>
-                            <Text>{item.stats.will}</Text>
+                            <Text>{will}</Text>
                         </View>
                     </TouchableOpacity>
             </View>
 
-    <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+                setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
 
-            <View style={{alignItems: 'center', marginBottom:100}}>
-                <Text>{statTitle }</Text>
-                <View style={styles.stats}>
-                    <Text>{statValue}</Text>
+                    <View style={{alignItems: 'center', marginBottom:100}}>
+                        <Pressable
+                            style={{padding:20}}
+                            onPress={() => Increase(statValue, statTitle)}>
+                            <Text>Increase</Text>
+                        </Pressable>
+
+                        <Text>{statTitle }</Text>
+                        <View style={styles.stats}>
+                            <Text>{statValue}</Text>
+                        </View>
+
+                        <Pressable
+                            style={{padding:20}}
+                            onPress={() => Decrease(statValue, statTitle)}>
+                            <Text>Decrease</Text>
+                        </Pressable>
+                    </View>
+
+                    <Pressable
+                        onPress={() => setModalVisible(!modalVisible)}>
+                        <Text>Close</Text>
+                    </Pressable>
                 </View>
-            </View>
-
-            <Pressable
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text>Close</Text>
-            </Pressable>
-          </View>
-        </View>
-    </Modal>
+                </View>
+            </Modal>
 
         </PageContainer>
     );
