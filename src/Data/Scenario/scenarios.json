@@ -1,0 +1,16 @@
+{
+    "scenarios": [   {
+
+        "id": 1,
+        "set": "Core",
+        "name": "Approach of Azathoth",
+        "story": "The Waitress",
+        "starting_space": "The Train Station",
+        "reckoning": "For each cultist monster, place one doom in it's space.(If it's in a street space, place the doom in an adjacent neighborhood space instead.)"
+ 
+      }
+    
+    ]
+
+
+}

@@ -2,9 +2,11 @@
     [
       {
         "id": 1,
+        "set": "Core",
         "name": "Agnes Baker",
         "occupation": "The Waitress",
         "traits": ["Mystic", "Outsider"],
+        "profilePhoto": "Agnes_Baker.png",
         "stats": {
           "health": 6,
           "sanity": 6,
@@ -21,9 +23,11 @@
       },
       {
         "id": 2,
+        "set": "Core",
         "name": "Calvin Wright",
         "occupation": "The Haunted",
         "traits": ["Sorcerer", "Touched"],
+        "profilePhoto": "Calvin_Wright.png",
         "stats": {
           "health": 5,
           "sanity": 5,
@@ -40,9 +44,11 @@
       },
       {
         "id": 3,
+        "set": "Core",
         "name": "Daniela Reyes",
         "occupation": "The Mechanic",
         "traits": ["Mechanic", "Survivor"],
+        "profilePhoto": "Daniela_Reyes.png",
         "stats": {
           "health": 6,
           "sanity": 4,
@@ -59,9 +65,11 @@
       },
       {
         "id": 4,
+        "set": "Core",
         "name": "Dexter Drake",
         "occupation": "The Magician",
         "traits": ["Magician", "Performer"],
+        "profilePhoto": "Dexter_Drake.png",
         "stats": {
           "health": 5,
           "sanity": 7,
@@ -77,9 +85,12 @@
         "starting_equipment": ["Spellbook", "Magic Wand"]
       },
       {
+        "id": 5,
+        "set": "Core",
         "name": "Jenny Barnes",
         "occupation": "The Dilettante",
         "traits": ["Socialite", "Performer"],
+        "profilePhoto": "Jenny_Barnes.png",
         "stats": {
           "health": 6,
           "sanity": 6,
@@ -95,10 +106,12 @@
         "starting_equipment": ["Lucky Cigarette Case", "Elder Sign Pendant"]
       },
       {
-        "id": 5,
+        "id": 6,
+        "set": "Core",
         "name": "Marie Lambeau",
         "occupation": "The Entertainer",
         "traits": ["Performer", "Occultist"],
+        "profilePhoto": "Marie_Lambeau.png",
         "stats": {
           "health": 6,
           "sanity": 6,
@@ -114,10 +127,12 @@
         "starting_equipment": ["Cursed Violin", "Occult Diary"]
       },
       {
-        "id": 6,
+        "id": 7,
+        "set": "Core",
         "name": "Michael McGlen",
         "occupation": "The Gangster",
         "traits": ["Criminal", "Tough Guy"],
+        "profilePhoto": "Michael_McGlen.png",
         "stats": {
           "health": 8,
           "sanity": 4,
@@ -134,10 +149,12 @@
         "starting_equipment": ["Tommy Gun", "Brass Knuckles"]
       },
       {
-        "id": 7,
+        "id": 8,
+        "set": "Core",
         "name": "Minh Thi Phan",
         "occupation": "The Secretary",
         "traits": ["Clergy", "Survivor"],
+        "profilePhoto": "Minh_Thi_Phan.png",
         "stats": {
           "health": 5,
           "sanity": 7,
@@ -154,10 +171,12 @@
         "starting_equipment": ["Studious", "Translate"]
       },
       {
-        "id": 8,
+        "id": 9,
+        "set": "Core",
         "name": "Norman Withers",
         "occupation": "The Astronomer",
         "traits": ["Scientist", "Scholar"],
+        "profilePhoto": "Norman_Withers.png",
         "stats": {
           "health": 5,
           "sanity": 7,
@@ -174,10 +193,12 @@
         "starting_equipment": ["Telescope", "Astronomy Book"]
       },
       {
-        "id": 8,
+        "id": 10,
+        "set": "Core",
         "name": "Rex Murphy",
         "occupation": "The Reporter",
         "traits": ["Reporter", "Tough Guy"],
+        "profilePhoto": "Rex_Murphy.png",
         "stats": {
           "health": 6,
           "sanity": 5,
@@ -194,10 +215,12 @@
         "starting_equipment": ["Notepad", "Camera"]
       },
       {
-        "id": 9,
+        "id": 11,
+        "set": "Core",
         "name": "Tommy Muldoon",
         "occupation": "The Rookie Cop",
         "traits": ["Agency", "Tough Guy"],
+        "profilePhoto": "Tommy_Muldoon.png",
         "stats": {
           "health": 7,
           "sanity": 5,
@@ -214,10 +237,12 @@
         "starting_equipment": ["Police Badge", "Baton"]
       },
       {
-        "id": 10,
+        "id": 12,
+        "set": "Core",
         "name": "Wendy Adams",
         "occupation": "The Urchin",
         "traits": ["Criminal", "Orphan"],
+        "profilePhoto": "Wendy_Adams.png",
         "stats": {
           "health": 4,
           "sanity": 6,

@@ -8,7 +8,9 @@ const InvestigatorStack = () => {
     const InvestigatorStack = createNativeStackNavigator();
     
     return (
-        <InvestigatorStack.Navigator>
+        <InvestigatorStack.Navigator screenOptions={{
+            headerShown: false
+          }}>
             <InvestigatorStack.Screen 
                 name='InvestigatorList'
                 component={InvestigatorsList}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Inventory({navigation}) {
+function Items({navigation}) {
     return (
         <div>
             
@@ -8,4 +8,4 @@ function Inventory({navigation}) {
     );
 }
 
-export default Inventory;
+export default Items;

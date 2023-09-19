@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-
-import { Image, Text, View, StyleSheet, TouchableOpacity, Modal, Pressable, TouchableWithoutFeedback } from 'react-native';
+import { Image, Text, View, StyleSheet, TouchableOpacity, Modal, Pressable, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import PageContainer from '../../Components/PageContainer';
 
-function InvestigatorStats({ route }) {
 
+function InvestigatorStats({ route, navigation }) {
+    const imgComponent = () => <img src={Agnes_Baker} />
     //investigator passed from list
     const { item } = route.params;
     const [modalVisible,setModalVisible] = useState(false)
@@ -21,6 +21,8 @@ function InvestigatorStats({ route }) {
     const [observation, setObservation] = useState(item.stats.observation);
     const [strength, setStrength] = useState(item.stats.strength);
     const [will, setWill] = useState(item.stats.will);
+
+    const [image, setImage] = useState(item.profilePhoto);
 
     const onStatPressHandler = (statValue, statTitle) =>{
 
@@ -91,15 +93,22 @@ function InvestigatorStats({ route }) {
 
 }
 
-
-    
+ 
 
     return (
-        <PageContainer>
+            
+        <ScrollView>
+            <View style={styles.backButtonContainer}>
+            <TouchableOpacity 
+                    onPress={() => navigation.goBack()}>
+                        <Text style={{fontSize:12}}>Go Back</Text>
+                </TouchableOpacity>
+            </View>    
+
             <View style={{alignItems:'center', marginBottom:30}}>
-                <Image style={styles.profileImage} source={require("../../assets/adaptive-icon.png")}></Image>
+                <Image style={styles.profileImage} source={require("../../assets/InvestigatorProfilePictures/" + item.profilePhoto)}></Image>
                 <Text style={{marginTop:10}}>{item.name}</Text>
-                <Text style={{padding:20,textAlign:'center'}}>{item.special_ability}</Text>
+                <Text style={{padding:20,textAlign:'center', fontSize:12}}>{item.special_ability}</Text>
             </View>
 
             <View style={styles.healthContainer}>
@@ -243,14 +252,15 @@ function InvestigatorStats({ route }) {
                 </View>
             </Modal>
 
-        </PageContainer>
+        </ScrollView>
     );
 }
 
 export default InvestigatorStats;
 
 const styles = StyleSheet.create({
-    profileImageContainer:{
+    backButtonContainer:{
+        padding:20
 
 
 
@@ -290,7 +300,8 @@ const styles = StyleSheet.create({
         width:80,
         height: 80, 
         justifyContent:'center',
-        marginTop:5
+        marginTop:5,
+        fontSize:12,
     },
 
     centeredView: {

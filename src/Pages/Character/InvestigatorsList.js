@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -11,11 +11,13 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import Investigators from '../../Data/Investigator/Investigators.json'
 
 function InvestigatorsList({navigation}) {
 
       const persons = require('../../Data/Investigator/Investigators.json');
+
+      const [profileImage, setProfileImage] = useState();
+
 
       console.log(persons)
 
@@ -23,7 +25,7 @@ function InvestigatorsList({navigation}) {
         console.log(item)
         navigation.navigate('InvestigatorStats',{item})
       }
-        
+
         return (
             <ScrollView>
                 <FlatList 
@@ -31,7 +33,9 @@ function InvestigatorsList({navigation}) {
                     renderItem={({ item }) =>
                         <TouchableOpacity onPress={() => onClick(item)}>
                             <View style={styles.itemContainer}>
-                                <Image style={styles.stats} source={require("../../assets/adaptive-icon.png")}/>
+                                <Image 
+                                  style={styles.stats} 
+                                  source={require("../../assets/InvestigatorProfilePictures/" + item.profilePhoto)}/>
 
                                 <View>
                                   <Text style={styles.InvestigatorTitle}>{item.name}</Text>

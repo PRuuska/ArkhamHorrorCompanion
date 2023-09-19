@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import InvestigatorStack from '../Pages/Character/InvestigatorStack';
 import ScenarioStack from '../Pages/Scenario/ScenarioStack';
-import InventoryStack from '../Pages/Inventory/InventoryStack';
+import ItemStack from '../Pages/Inventory/ItemStack';
 
 
 const Tab = createBottomTabNavigator();
@@ -12,7 +12,7 @@ function MainBottomTabs() {
       headerShown: false
     }}>
       <Tab.Screen name="Scenario" component={ScenarioStack} />
-      <Tab.Screen name="Inventory" component={InventoryStack} />
+      <Tab.Screen name="Items" component={ItemStack} />
       <Tab.Screen name="Investigator" component={InvestigatorStack} />
     </Tab.Navigator>
   );
