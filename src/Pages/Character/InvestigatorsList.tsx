@@ -11,44 +11,72 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+// import {firebase} from '../../../config'
+import { setStatusBarHidden } from 'expo-status-bar';
 
 function InvestigatorsList({navigation}) {
 
-      const persons = require('../../Data/Investigator/Investigators.json');
+  const [investigators , setInvestigators] = useState([]);
 
-      const [profileImage, setProfileImage] = useState();
+  //reference investigators in firebase
+  // const investigatorsRef = firebase.firestore().collection('Investigators');
 
+      // const persons = require('../../Data/Investigator/Investigators.json');
 
-      console.log(persons)
-
+      // const [profileImage, setProfileImage] = useState();
+      
       const onClick = (item) => {
         console.log(item)
         navigation.navigate('InvestigatorStats',{item})
       }
 
+      // useEffect(async () => {
+        
+      //   investigatorsRef
+      //   .onSnapshot(
+      //     querySnapshot => {
+
+      //         const investigators = []
+
+      //         querySnapshot.forEach((doc) => {
+      //           const {Name, Occupation} = doc.data();
+
+      //           investigators.push({
+      //             id: doc.id,
+      //             Name,
+      //             Occupation
+      //           })
+      //         })
+      //         setInvestigators(investigators)
+
+      //         console.log(investigators)
+
+      //     }
+      //   )
+      // }, [])
+
         return (
             <ScrollView>
-                <FlatList 
-                    data={persons}
+                {/* <FlatList 
+                    data={investigators}
                     renderItem={({ item }) =>
                         <TouchableOpacity onPress={() => onClick(item)}>
                             <View style={styles.itemContainer}>
                                 <Image 
                                   style={styles.stats} 
-                                  source={require("../../assets/InvestigatorProfilePictures/" + item.profilePhoto)}/>
+                                  source={require("../../assets/adaptive-icon.png")}/>
 
                                 <View>
-                                  <Text style={styles.InvestigatorTitle}>{item.name}</Text>
-                                  <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
+                                  <Text style={styles.InvestigatorTitle}>{item.Name}</Text>
+                                  <Text style={styles.InvestigatorJob}>{item.Occupation}</Text>
                                 </View>
 
                             </View>
 
                         </TouchableOpacity>
-                        
                     }
                     keyExtractor={(item) => item.id}
-                />
+                /> */}
             </ScrollView>
 
           );

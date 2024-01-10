@@ -4,7 +4,6 @@ import PageContainer from '../../Components/PageContainer';
 
 
 function InvestigatorStats({ route, navigation }) {
-    const imgComponent = () => <img src={Agnes_Baker} />
     //investigator passed from list
     const { item } = route.params;
     const [modalVisible,setModalVisible] = useState(false)
@@ -42,7 +41,6 @@ function InvestigatorStats({ route, navigation }) {
           setStatValue(statValues[statTitle]);
       
         setModalVisible(!modalVisible);
-
     }
 
     const Increase = (statValue, statTitle) => {
@@ -93,10 +91,7 @@ function InvestigatorStats({ route, navigation }) {
 
 }
 
- 
-
     return (
-            
         <ScrollView>
             <View style={styles.backButtonContainer}>
             <TouchableOpacity 
@@ -106,7 +101,7 @@ function InvestigatorStats({ route, navigation }) {
             </View>    
 
             <View style={{alignItems:'center', marginBottom:30}}>
-                <Image style={styles.profileImage} source={require("../../assets/InvestigatorProfilePictures/" + item.profilePhoto)}></Image>
+            <Image style={styles.profileImage} source={{ uri: "../../assets/InvestigatorProfilePictures/" + item.profilePhoto }} />
                 <Text style={{marginTop:10}}>{item.name}</Text>
                 <Text style={{padding:20,textAlign:'center', fontSize:12}}>{item.special_ability}</Text>
             </View>
@@ -160,7 +155,6 @@ function InvestigatorStats({ route, navigation }) {
                 <TouchableOpacity 
                     style={{alignItems: 'center'}}
                     onPress={() => onStatPressHandler(item.stats, "Lore")}>
-
                     <Text>Lore</Text>
                     <View style={styles.stats}>
                         <Text>{lore}</Text>
@@ -219,7 +213,6 @@ function InvestigatorStats({ route, navigation }) {
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
                 setModalVisible(!modalVisible);
                 }}>
                 <View style={styles.centeredView}>

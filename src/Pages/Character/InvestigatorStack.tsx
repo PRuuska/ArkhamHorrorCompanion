@@ -1,6 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import InvestigatorsList from '../Character/InvestigatorsList';
+import InvestigatorsList from './InvestigatorsList';
 import InvestigatorStats from './InvestigatorStats';
 import InvestigatorDetails from './InvestigatorDetails';
 
