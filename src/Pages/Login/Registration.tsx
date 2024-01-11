@@ -1,37 +1,36 @@
 import React, { useState } from 'react'
 import { Alert, StyleSheet, View } from 'react-native'
 import { supabase } from '../../../supabase'
-import { Button, Header, Input, Text } from 'react-native-elements'
+import { Button, Input } from 'react-native-elements'
 
-export default function Login({navigation}) {
+export default function Registration({navigation}) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-  async function signInWithEmail() {
+  async function signUpWithEmail() {
     setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
       email: email,
       password: password,
     })
 
     if (error) Alert.alert(error.message)
+    if (!session) Alert.alert('Please check your inbox for email verification!')
     setLoading(false)
   }
 
-  async function signUpWithEmail() {
-    navigation.navigate('Registration')
-    
+  const goBack = () => {
+    navigation.goBack();
+
   }
 
   return (
     <View style={styles.container}>
       <View style={[styles.verticallySpaced, styles.mt20]}>
-
-        <View style={styles.headerContainer}>
-            <Text>Arkham Horror Companion</Text>
-        </View>
-
         <Input
           label="Email"
           leftIcon={{ type: 'font-awesome', name: 'envelope' }}
@@ -52,11 +51,12 @@ export default function Login({navigation}) {
           autoCapitalize={'none'}
         />
       </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} />
+
+      <View style={styles.verticallySpaced}>
+        <Button title="Sign Up" disabled={loading} onPress={() => signUpWithEmail()} />
       </View>
       <View style={styles.verticallySpaced}>
-        <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
+        <Button title="Go Back" disabled={loading} onPress={() => goBack()} />
       </View>
     </View>
   )
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 40,
     padding: 12,
-    display: 'flex'
   },
   verticallySpaced: {
     paddingTop: 4,
@@ -76,10 +75,4 @@ const styles = StyleSheet.create({
   mt20: {
     marginTop: 20,
   },
-  headerContainer:{
-    justifyContent:'center',
-    alignItems:'center',
-    paddingTop: 100,
-    paddingBottom: 200,
-  }
 })

@@ -3,7 +3,6 @@ import InvestigatorStack from '../Pages/Character/InvestigatorStack';
 import ScenarioStack from '../Pages/Scenario/ScenarioStack';
 import ItemStack from '../Pages/Inventory/ItemStack';
 
-
 const Tab = createBottomTabNavigator();
 
 function MainBottomTabs() {
