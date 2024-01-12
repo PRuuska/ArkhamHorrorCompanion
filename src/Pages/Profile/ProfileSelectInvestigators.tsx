@@ -13,9 +13,11 @@ import {
 } from 'react-native';
 import { supabase } from '../../../supabase';
 
-function InvestigatorsList({navigation}) {
+function ProfileSelectInvestigators({navigation}) {
 
+  const [loading, setLoading] = useState(true)
   const [Investigators , setInvestigators] = useState([]);
+  const [userId, setUserId] = useState('')
 
   async function readInvestigatorsForUser(userId) {
     try {
@@ -26,7 +28,6 @@ function InvestigatorsList({navigation}) {
       const { data: investigatorsData, error: investigatorsError } = await supabase
         .from('investigator')
         .select('*');
-
 
       if (investigatorsError) {
         console.error('Error fetching Investigators data:', investigatorsError.message);
@@ -41,17 +42,40 @@ function InvestigatorsList({navigation}) {
     }
   }
 
-  function addInvestigatorToProfile (item) {
-    console.log(item)
+  
+  async function addInvestigatorToProfile(event) {
+    event.preventDefault();
 
+    setLoading(true);
+
+    //UPDATES TO PROFILE INVESTIGATOR TABLE
+    const investogator = {
+      userId: userId,
+
+
+      //WIP...
+      
+      
+    }
+
+    //INSERT NEW INVESTIGATORS TO TABLE
+    const { error } = await supabase.from('profileInvestigators').insert(investogator)
+
+    if (error) {
+      alert(error.message)
+    } else {
+
+
+    }
+    setLoading(false)
   }
-
-
 
   useEffect(() => {
     //get auth session
     supabase.auth.getSession().then(({ data: { session } }) => {
       const userId = session.user.id;
+
+      setUserId(userId);
 
       // Call readProfileInvestigators with the current userId
       readInvestigatorsForUser(userId).then((data) => {
@@ -138,4 +162,4 @@ const styles = StyleSheet.create({
     borderWidth:1
 }
 });
-export default InvestigatorsList;
+export default ProfileSelectInvestigators;

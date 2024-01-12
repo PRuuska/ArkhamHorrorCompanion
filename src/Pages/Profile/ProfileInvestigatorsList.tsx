@@ -8,25 +8,38 @@ import {
   StatusBar,
   ScrollView,
   Image,
-  TouchableOpacity,
-  Button
+  TouchableOpacity
 } from 'react-native';
 import { supabase } from '../../../supabase';
+import { Button } from 'react-native-elements';
 
-function InvestigatorsList({navigation}) {
+function ProfileInvestigatorsList({navigation}) {
 
-  const [Investigators , setInvestigators] = useState([]);
+  const [profileInvestigators , setProfileInvestigators] = useState([]);
 
   async function readInvestigatorsForUser(userId) {
     try {
-      
+      // Fetch data based on the userId and include all columns from the related 'Investigator' table
+      const { data: profileInvestigators, error } = await supabase
+        .from('profileInvestigators')
+        .select('*')
+        .eq('userId', userId);
+
+        console.log(profileInvestigators)
+
+      if (error) {
+        console.error('Error fetching data:', error.message);
+        return null; // or handle the error in your own way
+      }
+
       // If there are profileInvestigators for the user, get the list of investigatorIds
+      const investigatorIds = profileInvestigators.map((profileInvestigator) => profileInvestigator.investigatorId);
 
       // Fetch data from the 'Investigator' table for the investigatorIds
       const { data: investigatorsData, error: investigatorsError } = await supabase
         .from('investigator')
-        .select('*');
-
+        .select('*')
+        .in('id', investigatorIds);
 
       if (investigatorsError) {
         console.error('Error fetching Investigators data:', investigatorsError.message);
@@ -41,13 +54,6 @@ function InvestigatorsList({navigation}) {
     }
   }
 
-  function addInvestigatorToProfile (item) {
-    console.log(item)
-
-  }
-
-
-
   useEffect(() => {
     //get auth session
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -59,7 +65,7 @@ function InvestigatorsList({navigation}) {
           console.log('Profile Investigators:', data);
           // Handle the data as needed
 
-          setInvestigators(data);
+          setProfileInvestigators(data);
         } else {
           console.log('Failed to fetch Profile Investigators data.');
           // Handle the error or absence of data
@@ -68,29 +74,29 @@ function InvestigatorsList({navigation}) {
     });
   }, []);
 
-  
   const onClick = (item) => {
     console.log(item)
     navigation.navigate('InvestigatorStats',{item})
   }
 
+  const navigateToInvestigatorList = () => {
+    navigation.navigate('ProfileSelectInvestigators')
+  }
+
   return (
       <ScrollView>
           <FlatList 
-              data={Investigators}
+              data={profileInvestigators}
               renderItem={({ item }) =>
                   <TouchableOpacity onPress={() => onClick(item)}>
                       <View style={styles.itemContainer}>
                           <Image 
                             style={styles.stats} 
                             source={require("../../assets/adaptive-icon.png")}/>
-
                           <View>
                             <Text style={styles.InvestigatorTitle}>{item.Name}</Text>
                             <Text style={styles.InvestigatorJob}>{item.Occupation}</Text>
                           </View>
-
-                          <Button title='Add' onPress={() => addInvestigatorToProfile(item)}/>
 
                       </View>
 
@@ -98,6 +104,8 @@ function InvestigatorsList({navigation}) {
               }
               keyExtractor={(item) => item.id}
           />
+
+          <Button title={"Add Investigator"} onPress={() => navigateToInvestigatorList()}/>
       </ScrollView>
 
     );
@@ -138,4 +146,4 @@ const styles = StyleSheet.create({
     borderWidth:1
 }
 });
-export default InvestigatorsList;
+export default ProfileInvestigatorsList;

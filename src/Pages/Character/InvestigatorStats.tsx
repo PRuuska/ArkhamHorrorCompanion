@@ -11,17 +11,17 @@ function InvestigatorStats({ route, navigation }) {
     const [statTitle, setStatTitle] = useState("");
     const [statValue, setStatValue] = useState(0);
 
-    const [health, setHealth] = useState(item.stats.health);
-    const [sanity, setSanity] = useState(item.stats.sanity);
-    const [money, setMoney] = useState(item.stats.money);
-    const [focus, setFocus] = useState(item.stats.focus);
-    const [lore, setLore] = useState(item.stats.lore);
-    const [influence, setInfluence] = useState(item.stats.influence);
-    const [observation, setObservation] = useState(item.stats.observation);
-    const [strength, setStrength] = useState(item.stats.strength);
-    const [will, setWill] = useState(item.stats.will);
+    const [health, setHealth] = useState(item.Health);
+    const [sanity, setSanity] = useState(item.Sanity);
+    const [money, setMoney] = useState(item.Money);
+    const [focus, setFocus] = useState(item.Focus);
+    const [lore, setLore] = useState(item.Lore);
+    const [influence, setInfluence] = useState(item.Influence);
+    const [observation, setObservation] = useState(item.Observation);
+    const [strength, setStrength] = useState(item.Strength);
+    const [will, setWill] = useState(item.Will);
 
-    const [image, setImage] = useState(item.profilePhoto);
+    const [image, setImage] = useState(item.ProfilePhoto);
 
     const onStatPressHandler = (statValue, statTitle) =>{
 
@@ -103,7 +103,7 @@ function InvestigatorStats({ route, navigation }) {
             <View style={{alignItems:'center', marginBottom:30}}>
             <Image style={styles.profileImage} source={{ uri: "../../assets/InvestigatorProfilePictures/" + item.profilePhoto }} />
                 <Text style={{marginTop:10}}>{item.name}</Text>
-                <Text style={{padding:20,textAlign:'center', fontSize:12}}>{item.special_ability}</Text>
+                <Text style={{padding:20,textAlign:'center', fontSize:12}}>{item.SpecialAbility}</Text>
             </View>
 
             <View style={styles.healthContainer}>
