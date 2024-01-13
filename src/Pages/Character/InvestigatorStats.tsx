@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, Text, View, StyleSheet, TouchableOpacity, Modal, Pressable, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import PageContainer from '../../Components/PageContainer';
-
+import { supabase } from '../../../supabase';
 
 function InvestigatorStats({ route, navigation }) {
+
     //investigator passed from list
     const { item } = route.params;
     const [modalVisible,setModalVisible] = useState(false)
@@ -11,17 +12,17 @@ function InvestigatorStats({ route, navigation }) {
     const [statTitle, setStatTitle] = useState("");
     const [statValue, setStatValue] = useState(0);
 
-    const [health, setHealth] = useState(item.Health);
-    const [sanity, setSanity] = useState(item.Sanity);
-    const [money, setMoney] = useState(item.Money);
-    const [focus, setFocus] = useState(item.Focus);
-    const [lore, setLore] = useState(item.Lore);
-    const [influence, setInfluence] = useState(item.Influence);
-    const [observation, setObservation] = useState(item.Observation);
-    const [strength, setStrength] = useState(item.Strength);
-    const [will, setWill] = useState(item.Will);
+    const [health, setHealth] = useState(item.health);
+    const [sanity, setSanity] = useState(item.sanity);
+    const [money, setMoney] = useState(item.money);
+    const [focus, setFocus] = useState(item.focus);
+    const [lore, setLore] = useState(item.lore);
+    const [influence, setInfluence] = useState(item.influence);
+    const [observation, setObservation] = useState(item.observation);
+    const [strength, setStrength] = useState(item.strength);
+    const [will, setWill] = useState(item.will);
 
-    const [image, setImage] = useState(item.ProfilePhoto);
+    const [image, setImage] = useState(item.profilePhoto);
 
     const onStatPressHandler = (statValue, statTitle) =>{
 
@@ -88,8 +89,48 @@ function InvestigatorStats({ route, navigation }) {
         setStatValue(newval);
         statSetters[statTitle](newval);
       }
+    }
 
-}
+
+    async function saveStatValue(statValue, statTitle) {
+
+
+        let dbStatTitle = statTitle.toLowerCase();
+
+        alert(dbStatTitle + " " + statValue);
+
+
+        //save stat vaule to profile investigator by id 
+        const { data, error } = await supabase
+            .from('profileInvestigators')
+            .update({ health: statValue })
+            .eq('id', item.id)
+            .select();
+
+            if(error){
+                alert(error.message)
+
+            }else{
+
+                alert("stat updated")
+            }
+
+    }
+    
+
+    useEffect(() => {
+        console.log("item", item) 
+        // Auto-populate state values from route.params when the page loads
+        setHealth(item.health);
+        setSanity(item.sanity);
+        setMoney(item.money);
+        setFocus(item.focus);
+        setLore(item.lore);
+        setInfluence(item.influence);
+        setObservation(item.observation);
+        setStrength(item.strength);
+        setWill(item.will);
+      }, []);
 
     return (
         <ScrollView>
@@ -103,7 +144,7 @@ function InvestigatorStats({ route, navigation }) {
             <View style={{alignItems:'center', marginBottom:30}}>
             <Image style={styles.profileImage} source={{ uri: "../../assets/InvestigatorProfilePictures/" + item.profilePhoto }} />
                 <Text style={{marginTop:10}}>{item.name}</Text>
-                <Text style={{padding:20,textAlign:'center', fontSize:12}}>{item.SpecialAbility}</Text>
+                <Text style={{padding:20,textAlign:'center', fontSize:12}}>{item.specialAbility}</Text>
             </View>
 
             <View style={styles.healthContainer}>
@@ -236,6 +277,11 @@ function InvestigatorStats({ route, navigation }) {
                             <Text>Decrease</Text>
                         </Pressable>
                     </View>
+
+                    <Pressable
+                        onPress={() => saveStatValue(statValue, statTitle)}>
+                        <Text>Confirm</Text>
+                    </Pressable>
 
                     <Pressable
                         onPress={() => setModalVisible(!modalVisible)}>

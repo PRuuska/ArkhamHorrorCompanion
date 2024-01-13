@@ -25,8 +25,6 @@ function ProfileInvestigatorsList({navigation}) {
         .select('*')
         .eq('userId', userId);
 
-        console.log(profileInvestigators)
-
       if (error) {
         console.error('Error fetching data:', error.message);
         return null; // or handle the error in your own way
@@ -47,7 +45,7 @@ function ProfileInvestigatorsList({navigation}) {
       }
 
       // Data fetched successfully
-      return investigatorsData;
+      return profileInvestigators;
     } catch (error) {
       console.error('Error in readInvestigatorsForUser:', error.message);
       return null; // or handle the error in your own way
@@ -94,8 +92,8 @@ function ProfileInvestigatorsList({navigation}) {
                             style={styles.stats} 
                             source={require("../../assets/adaptive-icon.png")}/>
                           <View>
-                            <Text style={styles.InvestigatorTitle}>{item.Name}</Text>
-                            <Text style={styles.InvestigatorJob}>{item.Occupation}</Text>
+                            <Text style={styles.InvestigatorTitle}>{item.name}</Text>
+                            <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
                           </View>
 
                       </View>

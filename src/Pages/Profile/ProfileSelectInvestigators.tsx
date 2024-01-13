@@ -16,15 +16,13 @@ import { supabase } from '../../../supabase';
 function ProfileSelectInvestigators({navigation}) {
 
   const [loading, setLoading] = useState(true)
-  const [Investigators , setInvestigators] = useState([]);
+  const [investigators, setInvestigators] = useState<any>([]);
   const [userId, setUserId] = useState('')
 
   async function readInvestigatorsForUser(userId) {
     try {
       
-      // If there are profileInvestigators for the user, get the list of investigatorIds
-
-      // Fetch data from the 'Investigator' table for the investigatorIds
+      // Fetch all data from the 'Investigator' table 
       const { data: investigatorsData, error: investigatorsError } = await supabase
         .from('investigator')
         .select('*');
@@ -42,32 +40,40 @@ function ProfileSelectInvestigators({navigation}) {
     }
   }
 
-  
-  async function addInvestigatorToProfile(event) {
+  async function addInvestigatorToProfile(event, item) {
     event.preventDefault();
-
     setLoading(true);
 
     //UPDATES TO PROFILE INVESTIGATOR TABLE
-    const investogator = {
+    //POPULATE WITH DEFAULT INVESTIGATOR STATS AND DETAILS
+    const investigator = {
       userId: userId,
-
-
-      //WIP...
-      
-      
+      investigatorId: item.id,
+      name: item.name,
+      occupation: item.occupation,
+      health: item.health,
+      sanity:  item.sanity,
+      lore: item.lore,
+      will: item.will,
+      influence: item.influence,
+      observation: item.observation,
+      strength: item.strength,
+      focus: item.focus,
+      money: item.money      
     }
 
-    //INSERT NEW INVESTIGATORS TO TABLE
-    const { error } = await supabase.from('profileInvestigators').insert(investogator)
+    //INSERT NEW INVESTIGATORS TO TABLE 
+    const { error } = await supabase.from('profileInvestigators').insert(investigator).select()
 
     if (error) {
       alert(error.message)
     } else {
-
+      alert("Investigator added")
+      navigation.navigate('InvestigatorStats',{item})
 
     }
-    setLoading(false)
+    setLoading(false);
+    
   }
 
   useEffect(() => {
@@ -94,14 +100,13 @@ function ProfileSelectInvestigators({navigation}) {
 
   
   const onClick = (item) => {
-    console.log(item)
     navigation.navigate('InvestigatorStats',{item})
   }
 
   return (
       <ScrollView>
           <FlatList 
-              data={Investigators}
+              data={investigators}
               renderItem={({ item }) =>
                   <TouchableOpacity onPress={() => onClick(item)}>
                       <View style={styles.itemContainer}>
@@ -110,11 +115,11 @@ function ProfileSelectInvestigators({navigation}) {
                             source={require("../../assets/adaptive-icon.png")}/>
 
                           <View>
-                            <Text style={styles.InvestigatorTitle}>{item.Name}</Text>
-                            <Text style={styles.InvestigatorJob}>{item.Occupation}</Text>
+                            <Text style={styles.InvestigatorTitle}>{item.name}</Text>
+                            <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
                           </View>
 
-                          <Button title='Add' onPress={() => addInvestigatorToProfile(item)}/>
+                          <Button title='Add' onPress={() => addInvestigatorToProfile(event,item)}/>
 
                       </View>
 
