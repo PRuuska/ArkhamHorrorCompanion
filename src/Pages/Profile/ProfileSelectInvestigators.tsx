@@ -29,14 +29,14 @@ function ProfileSelectInvestigators({navigation}) {
 
       if (investigatorsError) {
         console.error('Error fetching Investigators data:', investigatorsError.message);
-        return null; // or handle the error in your own way
+        return null; 
       }
 
       // Data fetched successfully
       return investigatorsData;
     } catch (error) {
       console.error('Error in readInvestigatorsForUser:', error.message);
-      return null; // or handle the error in your own way
+      return null;
     }
   }
 
@@ -84,12 +84,12 @@ function ProfileSelectInvestigators({navigation}) {
       readInvestigatorsForUser(userId).then((data) => {
         if (data) {
           console.log('Profile Investigators:', data);
-          // Handle the data as needed
+          
 
           setInvestigators(data);
         } else {
           console.log('Failed to fetch Profile Investigators data.');
-          // Handle the error or absence of data
+          
         }
       });
     });

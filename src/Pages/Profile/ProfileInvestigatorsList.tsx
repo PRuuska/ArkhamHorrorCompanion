@@ -31,25 +31,12 @@ function ProfileInvestigatorsList({navigation}) {
         return null; // or handle the error in your own way
       }
 
-      // If there are profileInvestigators for the user, get the list of investigatorIds
-      const investigatorIds = profileInvestigators.map((profileInvestigator) => profileInvestigator.investigatorId);
-
-      // Fetch data from the 'Investigator' table for the investigatorIds
-      const { data: investigatorsData, error: investigatorsError } = await supabase
-        .from('investigator')
-        .select('*')
-        .in('id', investigatorIds);
-
-      if (investigatorsError) {
-        console.error('Error fetching Investigators data:', investigatorsError.message);
-        return null; // or handle the error in your own way
-      }
-
+      
       // Data fetched successfully
       return profileInvestigators;
     } catch (error) {
       console.error('Error in readInvestigatorsForUser:', error.message);
-      return null; // or handle the error in your own way
+      return null; 
     }
   }
 
@@ -60,6 +47,26 @@ function ProfileInvestigatorsList({navigation}) {
 
   const navigateToInvestigatorList = () => {
     navigation.navigate('ProfileSelectInvestigators')
+  }
+
+  async function deleteInvestigator(item) {
+    try {
+      // Fetch data based on the userId and include all columns from the related 'Investigator' table
+      const { error } = await supabase
+        .from('profileInvestigators')
+        .delete()
+        .eq('id', item);
+  
+      if (error) {
+        console.error('Error deleting data:', error.message);
+      } else {
+        // Deletion was successful, refresh the data
+        await refreshData();
+      }
+    } catch (error) {
+      console.error('Error in deleteInvestigator:', error.message);
+      
+    }
   }
 
   const refreshData = useCallback(async () => {
@@ -78,6 +85,8 @@ function ProfileInvestigatorsList({navigation}) {
           // Handle the error or absence of data
         }
       });
+
+     
     });
     
   }, []);
@@ -104,14 +113,15 @@ function ProfileInvestigatorsList({navigation}) {
                               <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
                             </View>
 
-                        </View>
+                            <Button title='Delete' onPress={() => deleteInvestigator(item.id)}/>
 
+                        </View>
                     </TouchableOpacity>
                 }
                 keyExtractor={(item) => item.id}
             />
+                <Button title={"Add Investigator"} onPress={() => navigateToInvestigatorList()}/>
 
-            <Button title={"Add Investigator"} onPress={() => navigateToInvestigatorList()}/>
         </ScrollView>
     </SafeAreaView>
       
