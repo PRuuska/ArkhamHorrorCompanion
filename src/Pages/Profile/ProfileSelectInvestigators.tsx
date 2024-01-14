@@ -40,8 +40,7 @@ function ProfileSelectInvestigators({navigation}) {
     }
   }
 
-  async function addInvestigatorToProfile(event, item) {
-    event.preventDefault();
+  async function addInvestigatorToProfile( item) {
     setLoading(true);
 
     //UPDATES TO PROFILE INVESTIGATOR TABLE
@@ -67,13 +66,11 @@ function ProfileSelectInvestigators({navigation}) {
 
     if (error) {
       alert(error.message)
-    } else {
-      alert("Investigator added")
-      navigation.navigate('InvestigatorStats',{item})
-
+    }
+    else {
+      navigation.navigate('ProfileInvestigatorsList')
     }
     setLoading(false);
-    
   }
 
   useEffect(() => {
@@ -119,7 +116,7 @@ function ProfileSelectInvestigators({navigation}) {
                             <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
                           </View>
 
-                          <Button title='Add' onPress={() => addInvestigatorToProfile(event,item)}/>
+                          <Button title='Add' onPress={() => addInvestigatorToProfile(item)}/>
 
                       </View>
 

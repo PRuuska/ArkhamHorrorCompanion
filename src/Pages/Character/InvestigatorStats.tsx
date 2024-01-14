@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Image, Text, View, StyleSheet, TouchableOpacity, Modal, Pressable, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import React, { useState, useEffect,useCallback } from 'react';
+import { Image, Text, View, StyleSheet, TouchableOpacity, Modal, Pressable, TouchableWithoutFeedback, ScrollView, SafeAreaView } from 'react-native';
 import PageContainer from '../../Components/PageContainer';
 import { supabase } from '../../../supabase';
+import { useFocusEffect } from '@react-navigation/native';
 
 function InvestigatorStats({ route, navigation }) {
 
@@ -94,33 +95,27 @@ function InvestigatorStats({ route, navigation }) {
 
     async function saveStatValue(statValue, statTitle) {
 
-
         let dbStatTitle = statTitle.toLowerCase();
+        const updateObject = {};
+            updateObject[dbStatTitle] = statValue;
 
-        alert(dbStatTitle + " " + statValue);
-
-
-        //save stat vaule to profile investigator by id 
-        const { data, error } = await supabase
-            .from('profileInvestigators')
-            .update({ health: statValue })
-            .eq('id', item.id)
-            .select();
+            // Save stat value to profile investigator by id
+            const { data, error } = await supabase
+                .from('profileInvestigators')
+                .update(updateObject)
+                .eq('id', item.id)
+                .select();
 
             if(error){
                 alert(error.message)
 
             }else{
-
-                alert("stat updated")
+                setModalVisible(!modalVisible);
             }
-
     }
-    
 
-    useEffect(() => {
-        console.log("item", item) 
-        // Auto-populate state values from route.params when the page loads
+    const refreshData = useCallback(async () => {
+
         setHealth(item.health);
         setSanity(item.sanity);
         setMoney(item.money);
@@ -130,85 +125,62 @@ function InvestigatorStats({ route, navigation }) {
         setObservation(item.observation);
         setStrength(item.strength);
         setWill(item.will);
+        
       }, []);
 
+
+    useFocusEffect(
+    useCallback(() => {
+      refreshData();
+    }, [refreshData])
+  );
+
     return (
-        <ScrollView>
-            <View style={styles.backButtonContainer}>
-            <TouchableOpacity 
-                    onPress={() => navigation.goBack()}>
-                        <Text style={{fontSize:12}}>Go Back</Text>
-                </TouchableOpacity>
-            </View>    
-
-            <View style={{alignItems:'center', marginBottom:30}}>
-            <Image style={styles.profileImage} source={{ uri: "../../assets/InvestigatorProfilePictures/" + item.profilePhoto }} />
-                <Text style={{marginTop:10}}>{item.name}</Text>
-                <Text style={{padding:20,textAlign:'center', fontSize:12}}>{item.specialAbility}</Text>
-            </View>
-
-            <View style={styles.healthContainer}>
-                
+        <SafeAreaView>
+                <ScrollView>
+                <View style={styles.backButtonContainer}>
                 <TouchableOpacity 
-                    style={{alignItems: 'center'}}
-                    onPress={() => onStatPressHandler(item.stats, "Health")}>
+                        onPress={() => navigation.goBack()}>
+                            <Text style={{fontSize:12}}>Go Back</Text>
+                    </TouchableOpacity>
+                </View>    
 
-                    <Text>Health</Text>
-                    <View style={styles.stats}>
-                        <Text>{health}</Text>
-                    </View>
+                <View style={{alignItems:'center', marginBottom:30}}>
+                <Image style={styles.profileImage} source={{ uri: "../../assets/InvestigatorProfilePictures/" + item.profilePhoto }} />
+                    <Text style={{marginTop:10}}>{item.name}</Text>
+                    <Text style={{padding:20,textAlign:'center', fontSize:12}}>{item.specialAbility}</Text>
+                </View>
 
-                </TouchableOpacity>
- 
-                <TouchableOpacity 
-                    style={{alignItems: 'center'}}
-                    onPress={() => onStatPressHandler(item.stats, "Money")}>
+                <View style={styles.healthContainer}>
                     
-                    <Text>Money</Text>
-                    <View style={styles.stats}>
-                        <Text>{money}</Text>
-                    </View>
-                </TouchableOpacity>
+                    <TouchableOpacity 
+                        style={{alignItems: 'center'}}
+                        onPress={() => onStatPressHandler(item.stats, "Health")}>
 
-                <TouchableOpacity 
-                    style={{alignItems: 'center'}}
-                    onPress={() => onStatPressHandler(item.stats, "Sanity")}>
-
-                    <Text>Sanity</Text>
-                    <View style={styles.stats}>
-                        <Text>{sanity}</Text>
-                    </View>
-                </TouchableOpacity>
-            </View>
-
-            <View style={styles.statsContainer}>
-
-                <TouchableOpacity 
-                    style={{alignItems: 'center'}}
-                    onPress={() => onStatPressHandler(item.stats, "Focus")}>
-
-                    <Text>Focus</Text>
-                    <View style={styles.stats}>
-                        <Text>{focus}</Text>
-                    </View>        
-                </TouchableOpacity>
-
-                <TouchableOpacity 
-                    style={{alignItems: 'center'}}
-                    onPress={() => onStatPressHandler(item.stats, "Lore")}>
-                    <Text>Lore</Text>
-                    <View style={styles.stats}>
-                        <Text>{lore}</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity 
-                    style={{alignItems: 'center'}}
-                    onPress={() => onStatPressHandler(item.stats, "Influence")}>
-
-                        <Text>Influence</Text>
+                        <Text>Health</Text>
                         <View style={styles.stats}>
-                            <Text>{influence}</Text>
+                            <Text>{health}</Text>
+                        </View>
+
+                    </TouchableOpacity>
+    
+                    <TouchableOpacity 
+                        style={{alignItems: 'center'}}
+                        onPress={() => onStatPressHandler(item.stats, "Money")}>
+                        
+                        <Text>Money</Text>
+                        <View style={styles.stats}>
+                            <Text>{money}</Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity 
+                        style={{alignItems: 'center'}}
+                        onPress={() => onStatPressHandler(item.stats, "Sanity")}>
+
+                        <Text>Sanity</Text>
+                        <View style={styles.stats}>
+                            <Text>{sanity}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -217,81 +189,115 @@ function InvestigatorStats({ route, navigation }) {
 
                     <TouchableOpacity 
                         style={{alignItems: 'center'}}
-                        onPress={() => onStatPressHandler(item.stats, "Observation")}>
+                        onPress={() => onStatPressHandler(item.stats, "Focus")}>
 
-                        <Text>Observation</Text>
+                        <Text>Focus</Text>
                         <View style={styles.stats}>
-                            <Text>{observation}</Text>
+                            <Text>{focus}</Text>
+                        </View>        
+                    </TouchableOpacity>
+
+                    <TouchableOpacity 
+                        style={{alignItems: 'center'}}
+                        onPress={() => onStatPressHandler(item.stats, "Lore")}>
+                        <Text>Lore</Text>
+                        <View style={styles.stats}>
+                            <Text>{lore}</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity 
                         style={{alignItems: 'center'}}
-                        onPress={() => onStatPressHandler(item.stats, "Strength")}>
+                        onPress={() => onStatPressHandler(item.stats, "Influence")}>
 
-                        <Text>Strength</Text>
-
-                        <View style={styles.stats}>
-                            <Text>{strength}</Text>
-                        </View>
-
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={{alignItems: 'center'}}
-                        onPress={() => onStatPressHandler(item.stats, "Will")}>
-
-                        <Text>Will</Text>
-
-                        <View style={styles.stats}>
-                            <Text>{will}</Text>
-                        </View>
-                    </TouchableOpacity>
-            </View>
-
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                setModalVisible(!modalVisible);
-                }}>
-                <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-
-                    <View style={{alignItems: 'center', marginBottom:100}}>
-                        <Pressable
-                            style={{padding:20}}
-                            onPress={() => Increase(statValue, statTitle)}>
-                            <Text>Increase</Text>
-                        </Pressable>
-
-                        <Text>{statTitle }</Text>
-                        <View style={styles.stats}>
-                            <Text>{statValue}</Text>
-                        </View>
-
-                        <Pressable
-                            style={{padding:20}}
-                            onPress={() => Decrease(statValue, statTitle)}>
-                            <Text>Decrease</Text>
-                        </Pressable>
+                            <Text>Influence</Text>
+                            <View style={styles.stats}>
+                                <Text>{influence}</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
 
-                    <Pressable
-                        onPress={() => saveStatValue(statValue, statTitle)}>
-                        <Text>Confirm</Text>
-                    </Pressable>
+                    <View style={styles.statsContainer}>
 
-                    <Pressable
-                        onPress={() => setModalVisible(!modalVisible)}>
-                        <Text>Close</Text>
-                    </Pressable>
-                </View>
-                </View>
-            </Modal>
+                        <TouchableOpacity 
+                            style={{alignItems: 'center'}}
+                            onPress={() => onStatPressHandler(item.stats, "Observation")}>
 
-        </ScrollView>
+                            <Text>Observation</Text>
+                            <View style={styles.stats}>
+                                <Text>{observation}</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity 
+                            style={{alignItems: 'center'}}
+                            onPress={() => onStatPressHandler(item.stats, "Strength")}>
+
+                            <Text>Strength</Text>
+
+                            <View style={styles.stats}>
+                                <Text>{strength}</Text>
+                            </View>
+
+                        </TouchableOpacity>
+
+                        <TouchableOpacity 
+                            style={{alignItems: 'center'}}
+                            onPress={() => onStatPressHandler(item.stats, "Will")}>
+
+                            <Text>Will</Text>
+
+                            <View style={styles.stats}>
+                                <Text>{will}</Text>
+                            </View>
+                        </TouchableOpacity>
+                </View>
+
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                    }}>
+                    <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+
+                        <View style={{alignItems: 'center', marginBottom:100}}>
+                            <Pressable
+                                style={{padding:20}}
+                                onPress={() => Increase(statValue, statTitle)}>
+                                <Text>Increase</Text>
+                            </Pressable>
+
+                            <Text>{statTitle }</Text>
+                            <View style={styles.stats}>
+                                <Text>{statValue}</Text>
+                            </View>
+
+                            <Pressable
+                                style={{padding:20}}
+                                onPress={() => Decrease(statValue, statTitle)}>
+                                <Text>Decrease</Text>
+                            </Pressable>
+                        </View>
+
+                        <Pressable
+                            onPress={() => saveStatValue(statValue, statTitle)}>
+                            <Text>Confirm</Text>
+                        </Pressable>
+
+                        <Pressable
+                            onPress={() => setModalVisible(!modalVisible)}>
+                            <Text>Close</Text>
+                        </Pressable>
+                    </View>
+                    </View>
+                </Modal>
+
+            </ScrollView>
+        </SafeAreaView>
+        
     );
 }
 

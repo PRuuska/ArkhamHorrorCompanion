@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
-  SafeAreaView,
   View,
   FlatList,
   StyleSheet,
   Text,
-  StatusBar,
   ScrollView,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  SafeAreaView
 } from 'react-native';
 import { supabase } from '../../../supabase';
 import { Button } from 'react-native-elements';
+import { useFocusEffect } from '@react-navigation/native';
 
 function ProfileInvestigatorsList({navigation}) {
 
@@ -23,7 +23,8 @@ function ProfileInvestigatorsList({navigation}) {
       const { data: profileInvestigators, error } = await supabase
         .from('profileInvestigators')
         .select('*')
-        .eq('userId', userId);
+        .eq('userId', userId)
+        .order('id');
 
       if (error) {
         console.error('Error fetching data:', error.message);
@@ -52,8 +53,16 @@ function ProfileInvestigatorsList({navigation}) {
     }
   }
 
-  useEffect(() => {
-    //get auth session
+  const onClick = (item) => {
+    console.log(item)
+    navigation.navigate('InvestigatorStats',{item})
+  }
+
+  const navigateToInvestigatorList = () => {
+    navigation.navigate('ProfileSelectInvestigators')
+  }
+
+  const refreshData = useCallback(async () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       const userId = session.user.id;
 
@@ -70,41 +79,42 @@ function ProfileInvestigatorsList({navigation}) {
         }
       });
     });
+    
   }, []);
 
-  const onClick = (item) => {
-    console.log(item)
-    navigation.navigate('InvestigatorStats',{item})
-  }
-
-  const navigateToInvestigatorList = () => {
-    navigation.navigate('ProfileSelectInvestigators')
-  }
+  useFocusEffect(
+    useCallback(() => {
+      refreshData();
+    }, [refreshData])
+  );
 
   return (
+    <SafeAreaView>
       <ScrollView>
-          <FlatList 
-              data={profileInvestigators}
-              renderItem={({ item }) =>
-                  <TouchableOpacity onPress={() => onClick(item)}>
-                      <View style={styles.itemContainer}>
-                          <Image 
-                            style={styles.stats} 
-                            source={require("../../assets/adaptive-icon.png")}/>
-                          <View>
-                            <Text style={styles.InvestigatorTitle}>{item.name}</Text>
-                            <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
-                          </View>
+            <FlatList 
+                data={profileInvestigators}
+                renderItem={({ item }) =>
+                    <TouchableOpacity onPress={() => onClick(item)}>
+                        <View style={styles.itemContainer}>
+                            <Image 
+                              style={styles.stats} 
+                              source={require("../../assets/adaptive-icon.png")}/>
+                            <View>
+                              <Text style={styles.InvestigatorTitle}>{item.name}</Text>
+                              <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
+                            </View>
 
-                      </View>
+                        </View>
 
-                  </TouchableOpacity>
-              }
-              keyExtractor={(item) => item.id}
-          />
+                    </TouchableOpacity>
+                }
+                keyExtractor={(item) => item.id}
+            />
 
-          <Button title={"Add Investigator"} onPress={() => navigateToInvestigatorList()}/>
-      </ScrollView>
+            <Button title={"Add Investigator"} onPress={() => navigateToInvestigatorList()}/>
+        </ScrollView>
+    </SafeAreaView>
+      
 
     );
   }
