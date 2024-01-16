@@ -12,6 +12,13 @@ import {
 import { supabase } from '../../../supabase';
 import { Button } from 'react-native-elements';
 import { useFocusEffect } from '@react-navigation/native';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 function ProfileInvestigatorsList({navigation}) {
 
@@ -108,20 +115,30 @@ function ProfileInvestigatorsList({navigation}) {
                             <Image 
                               style={styles.stats} 
                               source={require("../../assets/adaptive-icon.png")}/>
-                            <View>
+                            <View style={{paddingRight:150}}>
                               <Text style={styles.InvestigatorTitle}>{item.name}</Text>
                               <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
                             </View>
 
-                            <Button title='Delete' onPress={() => deleteInvestigator(item.id)}/>
+                            <Menu>
+                              <MenuTrigger text='...'/>
+                              <MenuOptions>
+                                <MenuOption onSelect={() =>  deleteInvestigator(item.id)} >
+                                  <Text style={{color: 'red'}}>Delete Investigator</Text>
+                                </MenuOption>
+                              </MenuOptions>
+                            </Menu>
 
                         </View>
+
                     </TouchableOpacity>
                 }
                 keyExtractor={(item) => item.id}
             />
                 <Button title={"Add Investigator"} onPress={() => navigateToInvestigatorList()}/>
 
+
+ 
         </ScrollView>
     </SafeAreaView>
       
@@ -136,12 +153,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 50,
   },
-
   itemContainer:{
     padding:10,
     flex:1,
     flexDirection: 'row',
     borderBottomWidth:1,
+    justifyContent:'space-between',
+    alignItems:'flex-start'
 
   },
   InvestigatorTitle: {

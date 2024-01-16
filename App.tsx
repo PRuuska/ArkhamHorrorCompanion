@@ -11,6 +11,8 @@ import InvestigatorsList from './src/Pages/Character/InvestigatorsList'
 import ScenarioList from './src/Pages/Scenario/ScenarioList'
 import MainBottomTabs from './src/Navigation/MainBottomTabs'
 import AuthStack from './src/Pages/Login/AuthStack'
+import { MenuProvider } from 'react-native-popup-menu';
+
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(null)
@@ -31,18 +33,26 @@ export default function App() {
 
   if(!session){
     return (
+      <MenuProvider>
+
       <NavigationContainer>
       <AuthStack />
         {session && session.user && <Text>{session.user.id}</Text>}
         </NavigationContainer>
+        </MenuProvider>
+
     )
 
   }
 
   return(
+    <MenuProvider>
+
     <NavigationContainer>
       <MainBottomTabs/>
     </NavigationContainer>
+      </MenuProvider>
+
   )
   
 }

@@ -4,20 +4,20 @@ import { TouchableOpacity } from 'react-native'
 
 export default function StatValueContainer({ onPress, title, statsValue, disabled, defaultStatsValue  }) {
     return (
-        <TouchableOpacity 
-            style={[styles.container, disabled && styles.disabledContainer]}
-            disabled={disabled}
-            onPress={onPress}>
-          <Text>{title}</Text>
-          <View style={[styles.stats]}>
-          <Text style={[
-            styles.defaultTextColour,
-            statsValue > defaultStatsValue ? styles.increasedTextColour : null,
-            statsValue < defaultStatsValue ? styles.decreasedTextColour : null,
+        <TouchableOpacity
+      style={[styles.container, disabled && styles.disabledContainer]}
+      disabled={disabled}
+      onPress={onPress}>
+      <Text>{title}</Text>
+      <View style={styles.stats}>
+        <Text style={[
+          styles.defaultTextColour,
+          statsValue > defaultStatsValue ? styles.increasedTextColour : (statsValue < defaultStatsValue ? styles.decreasedTextColour : null),
         ]}>
           {statsValue}
-        </Text>          </View>
-        </TouchableOpacity>
+        </Text>
+      </View>
+    </TouchableOpacity>
       );
     };
     

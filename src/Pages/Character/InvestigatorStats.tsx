@@ -59,15 +59,15 @@ function InvestigatorStats({ route, navigation }) {
 
           const defaultStatValues = {
             Id: investigatorId,
-            Health: defaultHealth,
-            Sanity: defaultSanity,
-            Money: defaultMoney,
-            Lore: defaultLore,
-            Influence: defaultInfluence,
-            Observation: defaultInfluence,
-            Strength: defaultStrength,
-            Will: defaultWill,
-            Focus: defaultFocus,
+            Health: defaultInvestigator.health,
+            Sanity: defaultInvestigator.sanity,
+            Money: defaultInvestigator.money,
+            Lore: defaultInvestigator.lore,
+            Influence: defaultInvestigator.influence,
+            Observation: defaultInvestigator.observation,
+            Strength: defaultInvestigator.strength,
+            Will: defaultInvestigator.will,
+            Focus: defaultInvestigator.focus,
           };
           
         
@@ -81,7 +81,6 @@ function InvestigatorStats({ route, navigation }) {
     }
 
     const Increase = (statValue, statTitle) => {
-
 
         const statSetters = {
             Id: setInvestigatorId,
@@ -104,7 +103,6 @@ function InvestigatorStats({ route, navigation }) {
             setStatValue(newval);
             statSetters[statTitle](newval);
           }
-
   }
 
   const Decrease = (statValue, statTitle) => {
@@ -129,6 +127,42 @@ function InvestigatorStats({ route, navigation }) {
         statSetters[statTitle](newval);
       }
     }
+
+    const resetToDefaultStatValue = (statTitle) => {
+        const defaultStatValues = {
+          Health: defaultHealth,
+          Sanity: defaultSanity,
+          Money: defaultMoney,
+          Lore: defaultLore,
+          Influence: defaultInfluence,
+          Observation: defaultInfluence,
+          Strength: defaultStrength,
+          Will: defaultWill,
+          Focus: defaultFocus,
+        };
+
+        console.log(defaultSanity)
+      
+        const statSetters = {
+          Health: setHealth,
+          Sanity: setSanity,
+          Money: setMoney,
+          Focus: setFocus,
+          Lore: setLore,
+          Influence: setInfluence,
+          Observation: setObservation,
+          Strength: setStrength,
+          Will: setWill,
+          // Add more stat titles and setters here if needed
+        };
+        console.log(statTitle)
+        // Check if the statTitle exists in the map
+        if (statSetters.hasOwnProperty(statTitle) && defaultStatValues.hasOwnProperty(statTitle)) {
+          const defaultValue = defaultStatValues[statTitle];
+          setStatValue(defaultValue);
+          statSetters[statTitle](defaultValue);
+        }
+      };
 
     //READ DEFAULT INVESTIGATOR DETAILS TO INPUT CHANGES
     async function readDefaultInvestigorDetails(id){
@@ -323,11 +357,10 @@ function InvestigatorStats({ route, navigation }) {
 
                             <Text>{statTitle }</Text>
                             <View style={styles.stats}>
-                            <Text style={[
-                                styles.defaultTextColour,
-                                statValue > statDefaultValue ? styles.increasedTextColour : null,
-                                statValue < statDefaultValue ? styles.decreasedTextColour : null,
-                            ]}>{statValue}</Text>
+                                <Text style={[
+                                    styles.defaultTextColour,
+                                    statValue > statDefaultValue ? styles.increasedTextColour : (statValue < statDefaultValue ? styles.decreasedTextColour : null),
+                                    ]}>{statValue}</Text>
                             </View>
 
                             <Pressable
@@ -335,19 +368,29 @@ function InvestigatorStats({ route, navigation }) {
                                 onPress={() => Decrease(statValue, statTitle)}>
                                 <Text>Decrease</Text>
                             </Pressable>
+
+                            <Pressable
+                                style={{padding:20}}
+                                onPress={() => resetToDefaultStatValue(statTitle)}>
+                                <Text>Reset</Text>
+                            </Pressable>
                         </View>
 
 
-                        {statTitle == "Focus" ? (
+                        {/* {statTitle == "Focus" ? (
                                <>
                                     <View>
                                         <Text> Apply Focus </Text>
 
-                                        
+                                        <Pressable
+                                            style={{padding:20}}
+                                            onPress={() => Increase(item.str, "Strength")}>
+                                            <Text>Strength</Text>
+                                        </Pressable>
 
                                     </View> 
                                </>      
-                            ) : null}
+                            ) : null} */}
 
                         <Pressable
                             style={{marginBottom:20}}

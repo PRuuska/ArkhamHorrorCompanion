@@ -12,6 +12,7 @@ import {
   Button
 } from 'react-native';
 import { supabase } from '../../../supabase';
+import { Icon } from 'react-native-elements';
 
 function ProfileSelectInvestigators({navigation}) {
 
@@ -101,30 +102,33 @@ function ProfileSelectInvestigators({navigation}) {
   }
 
   return (
+    <SafeAreaView>
       <ScrollView>
-          <FlatList 
-              data={investigators}
-              renderItem={({ item }) =>
-                  <TouchableOpacity onPress={() => onClick(item)}>
-                      <View style={styles.itemContainer}>
-                          <Image 
-                            style={styles.stats} 
-                            source={require("../../assets/adaptive-icon.png")}/>
+        <FlatList 
+            data={investigators}
+            renderItem={({ item }) =>
+                <TouchableOpacity onPress={() => onClick(item)}>
+                    <View style={styles.itemContainer}>
+                        <Image 
+                          style={styles.stats} 
+                          source={require("../../assets/adaptive-icon.png")}/>
 
-                          <View>
-                            <Text style={styles.InvestigatorTitle}>{item.name}</Text>
-                            <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
-                          </View>
+                        <View>
+                          <Text style={styles.InvestigatorTitle}>{item.name}</Text>
+                          <Text style={styles.InvestigatorJob}>{item.occupation}</Text>
+                        </View>
 
-                          <Button title='Add' onPress={() => addInvestigatorToProfile(item)}/>
+                        <Button title='Add' onPress={() => addInvestigatorToProfile(item)}/>
 
-                      </View>
+                    </View>
 
-                  </TouchableOpacity>
-              }
-              keyExtractor={(item) => item.id}
-          />
+                </TouchableOpacity>
+            }
+            keyExtractor={(item) => item.id}
+        />
       </ScrollView>
+    </SafeAreaView>
+      
 
     );
   }
