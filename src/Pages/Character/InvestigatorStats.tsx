@@ -3,6 +3,7 @@ import { Image, Text, View, StyleSheet, TouchableOpacity, Modal, Pressable, Touc
 import PageContainer from '../../Components/PageContainer';
 import { supabase } from '../../../supabase';
 import { useFocusEffect } from '@react-navigation/native';
+import StatValueContainer from '../../Components/StatValueContainer';
 
 function InvestigatorStats({ route, navigation }) {
 
@@ -12,7 +13,23 @@ function InvestigatorStats({ route, navigation }) {
 
     const [statTitle, setStatTitle] = useState("");
     const [statValue, setStatValue] = useState(0);
+    const [statDefaultValue, setDefultStatValue] = useState(0);
 
+    //DEFAULT INVESTIGATOR STATS
+    const [defaultInvestigator, setdefaultInvestigator] = useState<any>([]);
+    const [investigatorId, setInvestigatorId] = useState(item.id);
+    const [defaultHealth, setDefaultHealth] = useState(item.health);
+    const [defaultSanity, setDefaultSanity] = useState(item.sanity);
+    const [defaultMoney, setDefaultMoney] = useState(item.money);
+    const [defaultFocus, setDefaultFocus] = useState(item.focus);
+    const [defaultLore, setDefaultLore] = useState(item.lore);
+    const [defaultInfluence, setDefaultInfluence] = useState(item.influence);
+    const [defaultObservation, setDefaultObservation] = useState(item.observation);
+    const [defaultStrength, setDefaultStrength] = useState(item.strength);
+    const [defaultWill, setDefaultWill] = useState(item.will);
+
+
+    //PROFILE STATS
     const [health, setHealth] = useState(item.health);
     const [sanity, setSanity] = useState(item.sanity);
     const [money, setMoney] = useState(item.money);
@@ -28,6 +45,7 @@ function InvestigatorStats({ route, navigation }) {
     const onStatPressHandler = (statValue, statTitle) =>{
 
         const statValues = {
+            Id: investigatorId,
             Health: health,
             Sanity: sanity,
             Money: money,
@@ -38,23 +56,42 @@ function InvestigatorStats({ route, navigation }) {
             Will: will,
             Focus: focus,
           };
+
+          const defaultStatValues = {
+            Id: investigatorId,
+            Health: defaultHealth,
+            Sanity: defaultSanity,
+            Money: defaultMoney,
+            Lore: defaultLore,
+            Influence: defaultInfluence,
+            Observation: defaultInfluence,
+            Strength: defaultStrength,
+            Will: defaultWill,
+            Focus: defaultFocus,
+          };
+          
         
           setStatTitle(statTitle);
           setStatValue(statValues[statTitle]);
+          setDefultStatValue(defaultStatValues[statTitle]);
+
+        //   console.log(de)
       
         setModalVisible(!modalVisible);
     }
 
     const Increase = (statValue, statTitle) => {
 
+
         const statSetters = {
+            Id: setInvestigatorId,
             Health: setHealth,
             Sanity: setSanity,
             Money: setMoney,
             Focus: setFocus,
             Lore: setLore,
             Influence: setInfluence,
-            Obervation: setObservation,
+            Observation: setObservation,
             Strength: setStrength,
             Will: setWill,
             // Add more stat titles and setters here if needed
@@ -63,6 +100,7 @@ function InvestigatorStats({ route, navigation }) {
           // Check if the statTitle exists in the map
           if (statSetters.hasOwnProperty(statTitle)) {
             const newval = statValue + 1;
+
             setStatValue(newval);
             statSetters[statTitle](newval);
           }
@@ -78,7 +116,7 @@ function InvestigatorStats({ route, navigation }) {
         Focus: setFocus,
         Lore: setLore,
         Influence: setInfluence,
-        Obervation: setObservation,
+        Observation: setObservation,
         Strength: setStrength,
         Will: setWill,
         // Add more stat titles and setters here if needed
@@ -92,6 +130,29 @@ function InvestigatorStats({ route, navigation }) {
       }
     }
 
+    //READ DEFAULT INVESTIGATOR DETAILS TO INPUT CHANGES
+    async function readDefaultInvestigorDetails(id){
+        try {
+            // Fetch all data from the 'Investigator' table 
+            const { data: investigatorData, error: investigatorsError } = await supabase
+              .from('investigator')
+                .select('*')
+                .eq('id', id);
+      
+            if (investigatorsError) {
+              console.error('Error fetching Investigators data:', investigatorsError.message);
+              return null; 
+            }else{
+                // Data fetched successfully
+                return investigatorData;
+            }
+
+          } catch (error) {
+            console.error('Error in readInvestigatorsForUser:', error.message);
+            return null;
+          }
+
+    }
 
     async function saveStatValue(statValue, statTitle) {
 
@@ -116,6 +177,17 @@ function InvestigatorStats({ route, navigation }) {
 
     const refreshData = useCallback(async () => {
 
+        readDefaultInvestigorDetails(item.investigatorId).then((data) => {
+            if (data) {
+
+                setdefaultInvestigator(data[0])
+
+            } else {
+              console.log('Failed to fetch Profile Investigators data.');
+              // Handle the error or absence of data
+            }
+          });
+
         setHealth(item.health);
         setSanity(item.sanity);
         setMoney(item.money);
@@ -125,8 +197,8 @@ function InvestigatorStats({ route, navigation }) {
         setObservation(item.observation);
         setStrength(item.strength);
         setWill(item.will);
-        
-      }, []);
+
+      }, [item.investigatorId]);
 
 
     useFocusEffect(
@@ -145,112 +217,91 @@ function InvestigatorStats({ route, navigation }) {
                     </TouchableOpacity>
                 </View>    
 
-                <View style={{alignItems:'center', marginBottom:30}}>
+                <View style={{alignItems:'center', marginBottom:10}}>
                 <Image style={styles.profileImage} source={{ uri: "../../assets/InvestigatorProfilePictures/" + item.profilePhoto }} />
                     <Text style={{marginTop:10}}>{item.name}</Text>
-                    <Text style={{padding:20,textAlign:'center', fontSize:12}}>{item.specialAbility}</Text>
+                    <Text style={{padding:20,textAlign:'center', fontSize:12}}>{defaultInvestigator.specialAbility}</Text>
                 </View>
 
                 <View style={styles.healthContainer}>
-                    
-                    <TouchableOpacity 
-                        style={{alignItems: 'center'}}
-                        onPress={() => onStatPressHandler(item.stats, "Health")}>
-
-                        <Text>Health</Text>
-                        <View style={styles.stats}>
-                            <Text>{health}</Text>
-                        </View>
-
-                    </TouchableOpacity>
-    
-                    <TouchableOpacity 
-                        style={{alignItems: 'center'}}
-                        onPress={() => onStatPressHandler(item.stats, "Money")}>
                         
-                        <Text>Money</Text>
-                        <View style={styles.stats}>
-                            <Text>{money}</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <StatValueContainer
+                        onPress={() => onStatPressHandler(item.stats, "Health")}
+                        title="Health"
+                        statsValue={health}
+                        defaultStatsValue={defaultInvestigator.health}
+                        disabled={false}
+                        />
 
-                    <TouchableOpacity 
-                        style={{alignItems: 'center'}}
-                        onPress={() => onStatPressHandler(item.stats, "Sanity")}>
+                    <StatValueContainer
+                        onPress={() => onStatPressHandler(item.stats, "Money")}
+                        title="Money"
+                        statsValue={money}
+                        defaultStatsValue={defaultInvestigator.money}
+                        disabled={false}
+                        />
 
-                        <Text>Sanity</Text>
-                        <View style={styles.stats}>
-                            <Text>{sanity}</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <StatValueContainer
+                        onPress={() => onStatPressHandler(item.stats, "Sanity")}
+                        title="Sanity"
+                        statsValue={sanity}
+                        defaultStatsValue={defaultInvestigator.sanity}
+                        disabled={false}
+                        />
                 </View>
 
                 <View style={styles.statsContainer}>
 
-                    <TouchableOpacity 
-                        style={{alignItems: 'center'}}
-                        onPress={() => onStatPressHandler(item.stats, "Focus")}>
+                    <StatValueContainer
+                        onPress={() => onStatPressHandler(item.stats, "Focus")}
+                        title="Focus"
+                        statsValue={focus}
+                        defaultStatsValue={defaultInvestigator.focus}
+                        disabled={false}
+                        />
 
-                        <Text>Focus</Text>
-                        <View style={styles.stats}>
-                            <Text>{focus}</Text>
-                        </View>        
-                    </TouchableOpacity>
+                    <StatValueContainer
+                        onPress={() => onStatPressHandler(item.stats, "Lore")}
+                        title="Lore"
+                        statsValue={lore}
+                        defaultStatsValue={defaultInvestigator.lore}
+                        disabled={false}
+                        />
 
-                    <TouchableOpacity 
-                        style={{alignItems: 'center'}}
-                        onPress={() => onStatPressHandler(item.stats, "Lore")}>
-                        <Text>Lore</Text>
-                        <View style={styles.stats}>
-                            <Text>{lore}</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                        style={{alignItems: 'center'}}
-                        onPress={() => onStatPressHandler(item.stats, "Influence")}>
-
-                            <Text>Influence</Text>
-                            <View style={styles.stats}>
-                                <Text>{influence}</Text>
-                            </View>
-                        </TouchableOpacity>
+                    <StatValueContainer
+                        onPress={() => onStatPressHandler(item.stats, "Influence")}
+                        title="Influence"
+                        statsValue={influence}
+                        defaultStatsValue={defaultInvestigator.influence}
+                        disabled={false}
+                        />
                     </View>
 
                     <View style={styles.statsContainer}>
 
-                        <TouchableOpacity 
-                            style={{alignItems: 'center'}}
-                            onPress={() => onStatPressHandler(item.stats, "Observation")}>
+                        <StatValueContainer
+                            onPress={() => onStatPressHandler(item.stats, "Observation")}
+                            title="Observation"
+                            statsValue={observation}
+                            defaultStatsValue={defaultInvestigator.observation}
+                            disabled={false}
+                        />
 
-                            <Text>Observation</Text>
-                            <View style={styles.stats}>
-                                <Text>{observation}</Text>
-                            </View>
-                        </TouchableOpacity>
+                        <StatValueContainer
+                            onPress={() => onStatPressHandler(item.stats, "Strength")}
+                            title="Strength"
+                            statsValue={strength}
+                            defaultStatsValue={defaultInvestigator.strength}
+                            disabled={false}
+                        />
 
-                        <TouchableOpacity 
-                            style={{alignItems: 'center'}}
-                            onPress={() => onStatPressHandler(item.stats, "Strength")}>
-
-                            <Text>Strength</Text>
-
-                            <View style={styles.stats}>
-                                <Text>{strength}</Text>
-                            </View>
-
-                        </TouchableOpacity>
-
-                        <TouchableOpacity 
-                            style={{alignItems: 'center'}}
-                            onPress={() => onStatPressHandler(item.stats, "Will")}>
-
-                            <Text>Will</Text>
-
-                            <View style={styles.stats}>
-                                <Text>{will}</Text>
-                            </View>
-                        </TouchableOpacity>
+                        <StatValueContainer
+                            onPress={() => onStatPressHandler(item.stats, "Will")}
+                            title="Will"
+                            statsValue={will}
+                            defaultStatsValue={defaultInvestigator.will}
+                            disabled={false}
+                        />
                 </View>
 
                 <Modal
@@ -272,7 +323,11 @@ function InvestigatorStats({ route, navigation }) {
 
                             <Text>{statTitle }</Text>
                             <View style={styles.stats}>
-                                <Text>{statValue}</Text>
+                            <Text style={[
+                                styles.defaultTextColour,
+                                statValue > statDefaultValue ? styles.increasedTextColour : null,
+                                statValue < statDefaultValue ? styles.decreasedTextColour : null,
+                            ]}>{statValue}</Text>
                             </View>
 
                             <Pressable
@@ -282,7 +337,20 @@ function InvestigatorStats({ route, navigation }) {
                             </Pressable>
                         </View>
 
+
+                        {statTitle == "Focus" ? (
+                               <>
+                                    <View>
+                                        <Text> Apply Focus </Text>
+
+                                        
+
+                                    </View> 
+                               </>      
+                            ) : null}
+
                         <Pressable
+                            style={{marginBottom:20}}
                             onPress={() => saveStatValue(statValue, statTitle)}>
                             <Text>Confirm</Text>
                         </Pressable>
@@ -306,9 +374,6 @@ export default InvestigatorStats;
 const styles = StyleSheet.create({
     backButtonContainer:{
         padding:20
-
-
-
     },
 
     profileImage: {
@@ -319,7 +384,7 @@ const styles = StyleSheet.create({
     },
 
     healthContainer:{
-        marginTop:10,
+        marginTop:3,
         flexDirection:'row',
         justifyContent:'space-around'
     },
@@ -337,8 +402,6 @@ const styles = StyleSheet.create({
         justifyContent:'space-around'
 
     },
-
-
     stats:{
         borderWidth:1,
         alignItems: 'center', 
@@ -348,7 +411,6 @@ const styles = StyleSheet.create({
         marginTop:5,
         fontSize:12,
     },
-
     centeredView: {
         flex: 1,
         justifyContent: 'center',
@@ -374,4 +436,13 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
       },
+      defaultTextColour:{
+        color:"black"
+      },
+      increasedTextColour:{
+        color: "green"
+      },
+      decreasedTextColour:{
+        color: "red"
+      }
 })

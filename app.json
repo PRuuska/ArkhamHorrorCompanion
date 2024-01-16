@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "arkhamhorrorcompanion",
-    "slug": "arkhamhorrorcompanion",
+    "slug": "arkham-horror-companion",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.petey25.arkhamhorrorcompanion"
     },
     "android": {
       "adaptiveIcon": {
@@ -25,6 +26,12 @@
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c6989e5d-512b-4c72-81d8-3fe188b025df"
+      }
+    },
+    "owner": "petey25"
   }
 }
