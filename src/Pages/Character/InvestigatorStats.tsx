@@ -9,6 +9,7 @@ import InvestigatorDetails from './InvestigatorDetails';
 import Carousel  from 'react-native-snap-carousel-new';
 import { Pagination } from 'react-native-snap-carousel-new';
 import AssetList from '../Asset/AssetList';
+import ProfileInventoryList from '../Profile/ProfileInventoryList';
 
 function InvestigatorStats({ route, navigation }) {
 
@@ -72,7 +73,7 @@ function InvestigatorStats({ route, navigation }) {
   const carouselItems = [
     { title: 'Stats', component: <Stats profileItem={item} /> },
     { title: 'Details', component: <InvestigatorDetails defaultInvestigator={defaultInvestigator} /> },
-    { title: 'Assets', component: <AssetList item={item} /> },
+    { title: 'Inventory', component: <ProfileInventoryList item={item} /> },
   ];
 
   const renderItem = ({ item }) => (
