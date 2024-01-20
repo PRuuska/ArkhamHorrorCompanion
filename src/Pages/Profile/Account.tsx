@@ -1,14 +1,12 @@
-import React from 'react';
-import {View, Text, Button} from 'react-native'
-import {supabase} from '../../../supabase'
-import { useState, useEffect} from 'react';
+import { StyleSheet, Text, View , Button} from 'react-native'
+import React from 'react'
+import { useEffect } from 'react'
+import { supabase } from '../../../supabase'
 
-function Items({navigation}) {
+export default function Account() {
 
     const signout = () => {
-
         supabase.auth.signOut();
-
     }
 
     useEffect(() => {
@@ -25,4 +23,4 @@ function Items({navigation}) {
     );
 }
 
-export default Items;
+const styles = StyleSheet.create({})

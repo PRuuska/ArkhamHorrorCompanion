@@ -4,7 +4,7 @@ import ProfileInvestigatorsList from './ProfileInvestigatorsList';
 import InvestigatorStats from '../Character/InvestigatorStats';
 import InvestigatorsList from '../Character/InvestigatorsList';
 import ProfileSelectInvestigators from './ProfileSelectInvestigators';
-
+import AssetList from '../Asset/AssetList';
 
 const ProfileStack = () => {
 
@@ -22,6 +22,12 @@ const ProfileStack = () => {
                 name='InvestigatorStats'
                 component={InvestigatorStats}
             />
+
+            <ProfileStack.Screen 
+                name='AssetList'
+                component={AssetList}
+            />
+       
             <ProfileStack.Screen 
                 name='ProfileSelectInvestigators'
                 component={ProfileSelectInvestigators}

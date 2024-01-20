@@ -18,16 +18,20 @@ function InvestigatorDetails({ defaultInvestigator }) {
 
   return (
     <SafeAreaView>
-      <View>
-        <Text>Name: {defaultInvestigator.name}</Text>
-        <Text>Special Ability: {defaultInvestigator.specialAbility}</Text>
-      </View>
-
+   
       <View style={{paddingTop:50}}>
-        <Text>The Story So Far: {defaultInvestigator.story}</Text>
+        <Text>The Story So Far: </Text>
+        <Text style={{paddingTop:10}}>{defaultInvestigator.story}</Text>
       </View>
 
-      
+      <View style={{paddingTop:10}}>
+        <Text>Primary Role: {defaultInvestigator.primaryRole}</Text>
+      </View>
+
+      <View style={{paddingTop:10}}>
+        <Text>Secondary Role: {defaultInvestigator.secondaryRole}</Text>
+      </View>
+
     </SafeAreaView>
   );
 }

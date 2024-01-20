@@ -8,6 +8,7 @@ import Stats from '../../Components/Stats';
 import InvestigatorDetails from './InvestigatorDetails';
 import Carousel  from 'react-native-snap-carousel-new';
 import { Pagination } from 'react-native-snap-carousel-new';
+import AssetList from '../Asset/AssetList';
 
 function InvestigatorStats({ route, navigation }) {
 
@@ -71,7 +72,7 @@ function InvestigatorStats({ route, navigation }) {
   const carouselItems = [
     { title: 'Stats', component: <Stats profileItem={item} /> },
     { title: 'Details', component: <InvestigatorDetails defaultInvestigator={defaultInvestigator} /> },
-    // Add more items as needed
+    { title: 'Assets', component: <AssetList item={item} /> },
   ];
 
   const renderItem = ({ item }) => (
@@ -79,7 +80,6 @@ function InvestigatorStats({ route, navigation }) {
       {item.component}
     </View>
   );
-
 
     return (
         <SafeAreaView>
@@ -97,7 +97,7 @@ function InvestigatorStats({ route, navigation }) {
                     <Text style={{padding:20,textAlign:'center', fontSize:12}}>{defaultInvestigator.specialAbility}</Text>
                 </View>
 
-              <View>
+                <View style={styles.container}>
                 <Carousel
                     layout='default'
                     data={carouselItems}
@@ -115,11 +115,11 @@ function InvestigatorStats({ route, navigation }) {
                     inactiveDotScale={0.6}
                   />
               </View>
-                
-
 
                 
             </ScrollView>
+
+           
         </SafeAreaView>
         
     );
@@ -202,7 +202,10 @@ const styles = StyleSheet.create({
         color: "red"
       },
       container: {
-        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        // padding: 50
       },
     
       carouselItem: {
