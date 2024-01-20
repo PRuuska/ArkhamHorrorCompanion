@@ -47,7 +47,6 @@ function InvestigatorsList({navigation}) {
   }
 
 
-
   useEffect(() => {
     //get auth session
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -56,8 +55,6 @@ function InvestigatorsList({navigation}) {
       // Call readProfileInvestigators with the current userId
       readInvestigatorsForUser(userId).then((data) => {
         if (data) {
-          console.log('Profile Investigators:', data);
-          // Handle the data as needed
 
           setInvestigators(data);
         } else {
@@ -70,7 +67,6 @@ function InvestigatorsList({navigation}) {
 
   
   const onClick = (item) => {
-    console.log(item)
     navigation.navigate('InvestigatorStats',{item})
   }
 

@@ -15,7 +15,7 @@ function MainBottomTabs() {
       <Tab.Screen name="Scenario" component={ScenarioStack} />
       <Tab.Screen name="Items" component={ItemStack} />
       {/* <Tab.Screen name="Investigator" component={InvestigatorStack} /> */}
-      <Tab.Screen name="Your Investigators" component={ProfileStack} />
+      <Tab.Screen name="Investigators" component={ProfileStack} />
 
     </Tab.Navigator>
   );

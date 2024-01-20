@@ -18,7 +18,6 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 function ProfileInvestigatorsList({navigation}) {
 
@@ -38,7 +37,6 @@ function ProfileInvestigatorsList({navigation}) {
         return null; // or handle the error in your own way
       }
 
-      
       // Data fetched successfully
       return profileInvestigators;
     } catch (error) {
@@ -121,7 +119,11 @@ function ProfileInvestigatorsList({navigation}) {
                             </View>
 
                             <Menu>
-                              <MenuTrigger text='...'/>
+                              <MenuTrigger>
+                              <Image 
+                                  style={{width:20, height: 20}} 
+                                  source={require("../../assets/more.png")}/>              
+                              </MenuTrigger>
                               <MenuOptions>
                                 <MenuOption onSelect={() =>  deleteInvestigator(item.id)} >
                                   <Text style={{color: 'red'}}>Delete Investigator</Text>
@@ -180,6 +182,10 @@ const styles = StyleSheet.create({
     width:70,
     height:70,
     borderWidth:1
+},
+image: {
+  width: 320,
+  height: 320,
 }
 });
 export default ProfileInvestigatorsList;

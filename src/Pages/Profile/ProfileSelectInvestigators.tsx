@@ -98,6 +98,7 @@ function ProfileSelectInvestigators({navigation}) {
 
   
   const onClick = (item) => {
+    console.log(item)
     navigation.navigate('InvestigatorStats',{item})
   }
 
