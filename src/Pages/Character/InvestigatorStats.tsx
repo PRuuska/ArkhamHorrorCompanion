@@ -8,7 +8,6 @@ import Stats from '../../Components/Stats';
 import InvestigatorDetails from './InvestigatorDetails';
 import Carousel  from 'react-native-snap-carousel-new';
 import { Pagination } from 'react-native-snap-carousel-new';
-import AssetList from '../Asset/AssetList';
 import ProfileInventoryList from '../Profile/ProfileInventoryList';
 
 function InvestigatorStats({ route, navigation }) {
