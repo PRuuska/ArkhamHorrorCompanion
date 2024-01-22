@@ -3,7 +3,7 @@ import React from 'react'
 import { supabase } from '../../../supabase';
 import { useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ProfileInventoryList({item}) {
 
@@ -13,6 +13,8 @@ export default function ProfileInventoryList({item}) {
 
     async function readProfileAsset(userId) {
         try {
+
+          console.log(userId)
           // Fetch data based on the userId and include all columns from the related 'Investigator' table
           const { data: profileInvestigators, error } = await supabase
             .from('profileAsset')
@@ -55,34 +57,40 @@ export default function ProfileInventoryList({item}) {
         }
       }
 
+
+
       const refreshData = useCallback(async () => {
-        const idToUse = item.userId
-    
-        readProfileAsset(idToUse).then((data) => {
-            if (data) {
-
-                setProfileAsset(data)
-
-                readAsset(profileAsset.assetId).then((assetData) => {
-                    setAsset(assetData)
-
-
-                })
-                
-            } else {
-                console.log('Failed to fetch Profile Investigators data.');
-                // Handle the error or absence of data
-            }
-        });
-    }, [item.investigatorId, item.id]);
-
-
+        const idToUse = item.userId;
+      
+        const profileData = await readProfileAsset(idToUse);
+      
+        if (profileData) {
+          setProfileAsset(profileData);
+      
+          // Assuming each profileAsset has an assetId
+          const assetId = profileData[0].assetId;
+      
+          const assetData = await readAsset(assetId);
+      
+          if (assetData) {
+            setAsset(assetData);
+            console.log(asset);
+          }
+        } else {
+          console.log('Failed to fetch Profile Investigators data.');
+          // Handle the error or absence of data
+        }
+      }, [item.userId]); // Make sure to include item.userId in the dependency array
+      
+      useEffect(() => {
+        refreshData();
+      }, [refreshData]);
+      
       useFocusEffect(
         useCallback(() => {
           refreshData();
         }, [refreshData])
       );
-
       const onClick = (item) => {
         console.log(item)
       }
