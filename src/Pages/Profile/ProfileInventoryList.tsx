@@ -6,27 +6,31 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { Modal } from 'react-native';
 import InventoryManager from '../../Components/InventoryManager';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function ProfileInventoryList({item}, {navigation}) {
+    const isFocused = useIsFocused();
+    const [refresh, setRefresh] = useState(false);
+    const [selectedAssetId, setSelectedAssetId] = useState(null);
+
 
     const [modalVisible,setModalVisible] = useState(false);
     const [inventoryManagerModalVisible, setInventoryManagerModalVisible] = useState(false);
 
 
-    const [profileAsset, setProfileAsset] = useState([]);
+    const [profileAsset, setProfileAsset] = useState<any>([]);
+    const [profileAssetItem, setProfileAssetItem] = useState<any>([])
 
-    const [assetName, setAssetName] = useState("");
-    const [assetType, setassetType] = useState("");
-    const [assetSubType, setAssetSubType] = useState("");
-    const [assetDescription, setAssetDescription] = useState("");
-    const [assetHands, setAssetHands] = useState(0);
-    const [assetValue, setAssetValue] = useState(0);
+    // const [assetName, setAssetName] = useState("");
+    // const [assetType, setassetType] = useState("");
+    // const [assetSubType, setAssetSubType] = useState("");
+    // const [assetDescription, setAssetDescription] = useState("");
+    // const [assetHands, setAssetHands] = useState(0);
+    // const [assetValue, setAssetValue] = useState(0);
 
 
     async function readProfileAsset(userId) {
         try {
-          console.log("profile id",item.id)
-          // Fetch data based on the userId and include all columns from the related 'Investigator' table
           const { data: profileInvestigators, error } = await supabase
             .from('profileAsset')
             .select('*')
@@ -70,6 +74,28 @@ export default function ProfileInventoryList({item}, {navigation}) {
         }
       }
 
+      async function deleteProfileAsset(asset) {
+        try {
+
+          // Fetch data based on the userId and include all columns from the related 'Investigator' table
+          const { error } = await supabase
+            .from('profileAsset')
+            .delete()
+            .eq('id', asset);
+      
+          if (error) {
+            console.error('Error deleting data:', error.message);
+          } else {
+            // Deletion was successful, refresh the data
+            await refreshData();
+            setModalVisible(!modalVisible)
+          }
+        } catch (error) {
+          console.error('Error in deleteInvestigator:', error.message);
+          
+        }
+      }
+
       const refreshData = useCallback(async () => {
         supabase.auth.getSession().then(({ data: { session } }) => {
           const userId = session.user.id;
@@ -98,23 +124,22 @@ export default function ProfileInventoryList({item}, {navigation}) {
       
       useFocusEffect(
         useCallback(() => {
-          refreshData();
-        }, [refreshData])
+          if (isFocused || refresh) {
+            refreshData();
+            setRefresh(false);
+          }
+        }, [isFocused, refresh, refreshData])
       );
       const onClick = (item) => {
-
-        setModalVisible(!modalVisible)
+        setModalVisible(!modalVisible);
+        
+        // Store the assetId in the selectedAssetId state variable
+        setSelectedAssetId(item.id);
+    
         readAsset(item.assetId).then((data) => {
-
-          var asset = data[0]
-
-          setAssetName(asset.name);
-          setassetType(asset.type);
-          setAssetSubType(asset.subType);
-          setAssetDescription(asset.description);
-          setAssetHands(asset.hands);
-          setAssetValue(asset.value);
-        })
+          var asset = data[0];
+          setProfileAssetItem(asset);
+        });
       }
 
 
@@ -123,8 +148,7 @@ export default function ProfileInventoryList({item}, {navigation}) {
         setInventoryManagerModalVisible(!inventoryManagerModalVisible)
 
       }
-
-
+    
   return (
     <ScrollView>
 
@@ -151,8 +175,6 @@ export default function ProfileInventoryList({item}, {navigation}) {
                         <View>
                           <Text style={styles.InvestigatorTitle}>{item.name}</Text>
                           <Text style={styles.InvestigatorTitle}>{item.type} - {item.supType}</Text>
-                          <Text style={styles.InvestigatorTitle}>Hands - {item.hands}</Text>
-
                         </View>
 
                         {/* <Button title='Add' onPress={() => addInvestigatorToProfile(item)}/> */}
@@ -178,17 +200,18 @@ export default function ProfileInventoryList({item}, {navigation}) {
           <View style={styles.modalView}>
 
               <View style={{marginBottom:100}}>
-                <Text style={{paddingBottom:20}}>{assetName}</Text>
-                <Text>{assetType} - {assetSubType}</Text>
-                <Text>Hands - {assetHands}</Text>
-                <Text style={{paddingBottom:20}}>Value - {assetValue}</Text>
 
-                <Text>{assetDescription}</Text>
+                <Text style={{paddingBottom:20}}>{profileAssetItem.name}</Text>
+                <Text>{profileAssetItem.type} - {profileAssetItem.subType}</Text>
+                <Text>Hands - {profileAssetItem.hands}</Text>
+                <Text style={{paddingBottom:20}}>Value - {profileAssetItem.value}</Text>
+
+                <Text>{profileAssetItem.description}</Text>
               </View>
               
               <View>
                 <Pressable
-                    onPress={() => setModalVisible(!modalVisible)}>
+                    onPress={() => deleteProfileAsset(selectedAssetId)}>
                     <Text>Remove</Text>
                 </Pressable>
 
@@ -214,14 +237,12 @@ export default function ProfileInventoryList({item}, {navigation}) {
           setInventoryManagerModalVisible(!inventoryManagerModalVisible);
           }}>
             
-        
-
           <View style={styles.centeredView}>
             
             <View style={styles.modalView}>
               <ScrollView>
-              <View style={{padding:0}}>
-                  <InventoryManager/>
+              <View>
+              <InventoryManager item={item.id} setRefresh={setRefresh} />
                 </View>
 
                   <Pressable
@@ -230,7 +251,6 @@ export default function ProfileInventoryList({item}, {navigation}) {
                   </Pressable>
               </ScrollView>
                
-                
             </View>
           </View>
       </Modal>
@@ -239,6 +259,7 @@ export default function ProfileInventoryList({item}, {navigation}) {
       
   )
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -262,18 +283,10 @@ const styles = StyleSheet.create({
 
     backButtonContainer:{
       padding:20
-  },
-
-  statsContainer:{
-      textAlign:'center',
-      marginTop:50,
-      flexDirection:'row',
-      justifyContent:'space-around'
-
-  },
-  
+  },  
   centeredView: {
       flex: 1,
+      display:'flex',
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: 22,

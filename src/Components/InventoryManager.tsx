@@ -5,18 +5,16 @@ import { FlatList } from 'react-native'
 import { supabase } from '../../supabase'
 import { useState } from 'react'
 import { useEffect } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import { useCallback } from 'react'
 
-export default function InventoryManager() {
+export default function InventoryManager({item, setRefresh}) {
 
+    const [userId, setUserId] = useState("")
     const [asset, setAsset] = useState<any>();
     const [modalVisible,setModalVisible] = useState(false);
 
-    const [assetName, setAssetName] = useState("");
-    const [assetType, setassetType] = useState("");
-    const [assetSubType, setAssetSubType] = useState("");
-    const [assetDescription, setAssetDescription] = useState("");
-    const [assetHands, setAssetHands] = useState(0);
-    const [assetValue, setAssetValue] = useState(0);
+    const [assetItem, setAssetItem] = useState<any>([])
 
     async function readAllAsset() {
         try {
@@ -62,25 +60,63 @@ export default function InventoryManager() {
         }
       }
 
+      async function addAsset(assetItem) {
+
+        const asset = {
+          userId: userId,
+          assetId: assetItem.id,
+          name: assetItem.name,
+          type: assetItem.type,
+          supType: assetItem.subType,
+          hands: assetItem.hands,
+          profileInvestigatorId: item
+        }
+    
+        //INSERT NEW INVESTIGATORS TO TABLE 
+        const { error } = await supabase.from('profileAsset')
+        .insert(asset).select()
+    
+        if (error) {
+            alert(error.message);
+          } else {
+            setModalVisible(!modalVisible);
+            setRefresh(true); // Trigger refresh in ProfileInventoryList
+          }
+    }
 
 
-      useEffect(() => {
-        //get auth session
+      const refreshData = useCallback(async () => {
         supabase.auth.getSession().then(({ data: { session } }) => {
           const userId = session.user.id;
     
-          // Call readProfileInvestigators with the current userId
-          readAllAsset().then((data) => {
-            if (data) {
-    
-              setAsset(data);
-            } else {
-              console.log('Failed to fetch Profile Investigators data.');
-              // Handle the error or absence of data
-            }
+          supabase.auth.getSession().then(({ data: { session } }) => {
+            const userId = session.user.id;
+  
+            setUserId(userId);
+      
+            // Call readProfileInvestigators with the current userId
+            readAllAsset().then((data) => {
+              if (data) {
+      
+                setAsset(data);
+              } else {
+                console.log('Failed to fetch Profile Investigators data.');
+                // Handle the error or absence of data
+              }
+            });
           });
+    
+         
         });
+        
       }, []);
+
+
+      useFocusEffect(
+        useCallback(() => {
+          refreshData();
+        }, [refreshData])
+      );
 
 
       const onClick = (item) => {
@@ -90,12 +126,9 @@ export default function InventoryManager() {
 
           var asset = data[0];
 
-          setAssetName(asset.name);
-          setassetType(asset.type);
-          setAssetSubType(asset.subType);
-          setAssetDescription(asset.description);
-          setAssetHands(asset.hands);
-          setAssetValue(asset.value);
+          setAssetItem(asset)
+
+  
         })
       }
 
@@ -136,16 +169,17 @@ export default function InventoryManager() {
           <View style={styles.modalView}>
 
               <View style={{marginBottom:100}}>
-                <Text style={{paddingBottom:20}}>{assetName}</Text>
-                <Text>{assetType} - {assetSubType}</Text>
-                <Text>Hands - {assetHands}</Text>
-                <Text style={{paddingBottom:20}}>Value - {assetValue}</Text>
+                
+                <Text style={{paddingBottom:20}}>{assetItem.name}</Text>
+                <Text>{assetItem.type} - {assetItem.subType}</Text>
+                <Text>Hands - {assetItem.hands}</Text>
+                <Text style={{paddingBottom:20}}>Value - {assetItem.value}</Text>
 
-                <Text>{assetDescription}</Text>
+                <Text>{assetItem.description}</Text>
               </View>
               
                 <Pressable
-                    onPress={() => setModalVisible(!modalVisible)}>
+                    onPress={() => addAsset(assetItem)}>
                     <Text>Add</Text>
                 </Pressable>
 
