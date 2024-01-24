@@ -5,6 +5,8 @@ import InvestigatorStats from '../Character/InvestigatorStats';
 import InvestigatorsList from '../Character/InvestigatorsList';
 import ProfileSelectInvestigators from './ProfileSelectInvestigators';
 import AssetList from '../Asset/AssetList';
+import ProfileInventoryList from './ProfileInventoryList';
+
 
 const ProfileStack = () => {
 
@@ -31,6 +33,12 @@ const ProfileStack = () => {
             <ProfileStack.Screen 
                 name='ProfileSelectInvestigators'
                 component={ProfileSelectInvestigators}
+            />
+
+
+            <ProfileStack.Screen 
+                name='ProfileInventoryList'
+                component={ProfileInventoryList}
             />
 
         </ProfileStack.Navigator>

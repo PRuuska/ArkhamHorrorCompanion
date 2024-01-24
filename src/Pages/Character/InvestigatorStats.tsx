@@ -104,16 +104,16 @@ function InvestigatorStats({ route, navigation }) {
                     renderItem={renderItem}
                     sliderWidth={380}
                     itemWidth={350}
-                    onSnapToItem={(index) => setActiveIndex(index)}
+                    // onSnapToItem={(index) => setActiveIndex(index)}
                     />
-                  <Pagination
+                  {/* <Pagination
                     dotsLength={carouselItems.length}
                     activeDotIndex={activeIndex}
                     containerStyle={styles.paginationContainer}
                     dotStyle={styles.paginationDot}
                     inactiveDotOpacity={0.4}
                     inactiveDotScale={0.6}
-                  />
+                  /> */}
               </View>
 
                 

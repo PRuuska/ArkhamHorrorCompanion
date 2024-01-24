@@ -1,19 +1,15 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, Pressable } from 'react-native'
+import { Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { supabase } from '../../../supabase';
-import { useCallback } from 'react';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useState, useEffect } from 'react';
-import { Modal } from 'react-native';
-import InventoryManager from '../../Components/InventoryManager';
+import { ScrollView } from 'react-native'
+import { FlatList } from 'react-native'
+import { supabase } from '../../supabase'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
-export default function ProfileInventoryList({item}, {navigation}) {
+export default function InventoryManager() {
 
+    const [asset, setAsset] = useState<any>();
     const [modalVisible,setModalVisible] = useState(false);
-    const [inventoryManagerModalVisible, setInventoryManagerModalVisible] = useState(false);
-
-
-    const [profileAsset, setProfileAsset] = useState([]);
 
     const [assetName, setAssetName] = useState("");
     const [assetType, setassetType] = useState("");
@@ -22,38 +18,12 @@ export default function ProfileInventoryList({item}, {navigation}) {
     const [assetHands, setAssetHands] = useState(0);
     const [assetValue, setAssetValue] = useState(0);
 
-
-    async function readProfileAsset(userId) {
-        try {
-          console.log("profile id",item.id)
-          // Fetch data based on the userId and include all columns from the related 'Investigator' table
-          const { data: profileInvestigators, error } = await supabase
-            .from('profileAsset')
-            .select('*')
-            .eq('userId', userId)
-            .eq('profileInvestigatorId', item.id)
-            .order('id');
-    
-          if (error) {
-            console.error('Error fetching data:', error.message);
-            return null; // or handle the error in your own way
-          }
-    
-          // Data fetched successfully
-          return profileInvestigators;
-        } catch (error) {
-          console.error('Error in readInvestigatorsForUser:', error.message);
-          return null; 
-        }
-      }
-
-      async function readAsset(assetId) {
+    async function readAllAsset() {
         try {
           // Fetch data based on the userId and include all columns from the related 'Investigator' table
           const { data: asset, error } = await supabase
             .from('asset')
             .select('*')
-            .eq('id', assetId)
             .order('id');
     
           if (error) {
@@ -70,43 +40,55 @@ export default function ProfileInventoryList({item}, {navigation}) {
         }
       }
 
-      const refreshData = useCallback(async () => {
+      async function readAsset(assetId) {
+        try {
+          // Fetch data based on the userId and include all columns from the related 'Investigator' table
+          const { data: asset, error } = await supabase
+            .from('asset')
+            .select('*')
+            .eq('id', assetId);
+    
+          if (error) {
+            console.error('Error fetching data:', error.message);
+            return null; // or handle the error in your own way
+          }else{
+
+            return asset;
+          }
+    
+        } catch (error) {
+          console.error('Error in readInvestigatorsForUser:', error.message);
+          return null; 
+        }
+      }
+
+
+
+      useEffect(() => {
+        //get auth session
         supabase.auth.getSession().then(({ data: { session } }) => {
           const userId = session.user.id;
     
           // Call readProfileInvestigators with the current userId
-          readProfileAsset(userId).then((data) => {
+          readAllAsset().then((data) => {
             if (data) {
-              setProfileAsset(data);
-
-              console.log("profile asset",profileAsset)
+    
+              setAsset(data);
             } else {
               console.log('Failed to fetch Profile Investigators data.');
               // Handle the error or absence of data
             }
           });
-    
         });
-        
       }, []);
-      
 
-      
-      useEffect(() => {
-        refreshData();
-      }, [refreshData]);
-      
-      useFocusEffect(
-        useCallback(() => {
-          refreshData();
-        }, [refreshData])
-      );
+
       const onClick = (item) => {
 
         setModalVisible(!modalVisible)
-        readAsset(item.assetId).then((data) => {
+        readAsset(item.id).then((data) => {
 
-          var asset = data[0]
+          var asset = data[0];
 
           setAssetName(asset.name);
           setassetType(asset.type);
@@ -117,57 +99,33 @@ export default function ProfileInventoryList({item}, {navigation}) {
         })
       }
 
-
-      const onInventoryManagerClick = () =>{
-
-        setInventoryManagerModalVisible(!inventoryManagerModalVisible)
-
-      }
-
-
   return (
     <ScrollView>
-
-      <View>
-
-        <TouchableOpacity onPress={() => onInventoryManagerClick()}>
-              <View style={styles.itemContainer}>
-                  <View>
-                    <Text style={styles.InvestigatorTitle}>Inventor Manager</Text>
-                  </View>
-              </View>
-        </TouchableOpacity>
-
-      </View>
-      <View>
-
-        <Text>Inventory</Text>
-        <FlatList 
-            data={profileAsset}
-            renderItem={({ item }) =>
-                <TouchableOpacity onPress={() => onClick(item)}>
-                    <View style={styles.itemContainer}>
-
+    <FlatList 
+    style={{width:350}}
+        data={asset}
+        renderItem={({ item }) =>
+            <TouchableOpacity onPress={() => onClick(item)}>
+                <View style={styles.itemContainer}>
+    
                         <View>
                           <Text style={styles.InvestigatorTitle}>{item.name}</Text>
-                          <Text style={styles.InvestigatorTitle}>{item.type} - {item.supType}</Text>
+                          <Text style={styles.InvestigatorTitle}>{item.type} - {item.subType}</Text>
                           <Text style={styles.InvestigatorTitle}>Hands - {item.hands}</Text>
 
                         </View>
 
-                        {/* <Button title='Add' onPress={() => addInvestigatorToProfile(item)}/> */}
+                </View>
 
-                    </View>
+            </TouchableOpacity>
+            
+        }
+        keyExtractor={(item) => item.id}
+    />
 
-                </TouchableOpacity>
-            }
-            keyExtractor={(item) => item.id}
-          />
-      </View>
+    {/* ASSET MODAL */}
 
-      {/* ASSET MODAL */}
-
-      <Modal
+    <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
@@ -186,10 +144,9 @@ export default function ProfileInventoryList({item}, {navigation}) {
                 <Text>{assetDescription}</Text>
               </View>
               
-              <View>
                 <Pressable
                     onPress={() => setModalVisible(!modalVisible)}>
-                    <Text>Remove</Text>
+                    <Text>Add</Text>
                 </Pressable>
 
                 <Pressable
@@ -197,46 +154,11 @@ export default function ProfileInventoryList({item}, {navigation}) {
                     <Text>Close</Text>
                 </Pressable>
               </View>
-              
-              <View>
-                
-              </View>
-          </View>
+       
           </View>
       </Modal>
+</ScrollView>
 
-          {/* INVENTORY MANAGER MODAL */}
-      <Modal
-          animationType="slide"
-          transparent={true}
-          visible={inventoryManagerModalVisible}
-          onRequestClose={() => {
-          setInventoryManagerModalVisible(!inventoryManagerModalVisible);
-          }}>
-            
-        
-
-          <View style={styles.centeredView}>
-            
-            <View style={styles.modalView}>
-              <ScrollView>
-              <View style={{padding:0}}>
-                  <InventoryManager/>
-                </View>
-
-                  <Pressable
-                      onPress={() => setInventoryManagerModalVisible(!inventoryManagerModalVisible)}>
-                      <Text>Close</Text>
-                  </Pressable>
-              </ScrollView>
-               
-                
-            </View>
-          </View>
-      </Modal>
-    </ScrollView>
-
-      
   )
 }
 
