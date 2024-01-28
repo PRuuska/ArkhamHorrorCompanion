@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, Pressable } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, Pressable, ScrollViewComponent } from 'react-native'
 import React from 'react'
 import { supabase } from '../../../supabase';
 import { useCallback } from 'react';
@@ -152,40 +152,41 @@ export default function ProfileInventoryList({item}, {navigation}) {
   return (
     <ScrollView>
 
-      <View>
-
         <TouchableOpacity onPress={() => onInventoryManagerClick()}>
-              <View style={styles.itemContainer}>
-                  <View>
-                    <Text style={styles.InvestigatorTitle}>Inventor Manager</Text>
-                  </View>
-              </View>
-        </TouchableOpacity>
-
-      </View>
-      <View>
-
-        <Text>Inventory</Text>
-        <FlatList 
-            data={profileAsset}
-            renderItem={({ item }) =>
-                <TouchableOpacity onPress={() => onClick(item)}>
-                    <View style={styles.itemContainer}>
+            <View style={styles.inventoryManager}>
 
                         <View>
-                          <Text style={styles.InvestigatorTitle}>{item.name}</Text>
-                          <Text style={styles.InvestigatorTitle}>{item.type} - {item.supType}</Text>
+                          <Text>Inventor Manager</Text>
                         </View>
 
-                        {/* <Button title='Add' onPress={() => addInvestigatorToProfile(item)}/> */}
+            </View>
+        </TouchableOpacity>
 
-                    </View>
 
-                </TouchableOpacity>
-            }
-            keyExtractor={(item) => item.id}
-          />
-      </View>
+        <ScrollView nestedScrollEnabled={true}>
+          <Text>Inventory</Text>
+                  <FlatList 
+                      data={profileAsset}
+                      renderItem={({ item }) =>
+                          <TouchableOpacity onPress={() => onClick(item)}>
+                              <View style={styles.itemContainer}>
+
+                                  <View>
+                                    <Text style={styles.InvestigatorTitle}>{item.name}</Text>
+                                    <Text style={styles.InvestigatorTitle}>{item.type} - {item.supType}</Text>
+                                  </View>
+
+                                  {/* <Button title='Add' onPress={() => addInvestigatorToProfile(item)}/> */}
+
+                              </View>
+
+                          </TouchableOpacity>
+                      }
+                      keyExtractor={(item) => item.id}
+                    />
+          </ScrollView>
+        
+        
 
       {/* ASSET MODAL */}
 
@@ -272,6 +273,19 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection: 'row',
         borderBottomWidth:1,
+      },
+
+      inventoryManager:{
+        // display: 'flex',
+        // background-color: 'burlywood',
+        // align-items: center,
+        // padd: 20,
+        // margi: 26,
+        backgroundColor:'burlywood',
+        alignItems: 'center',
+        padding: 20,
+        margin:20
+        
     
       },
       InvestigatorTitle: {

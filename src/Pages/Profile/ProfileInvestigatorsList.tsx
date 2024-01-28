@@ -56,6 +56,24 @@ function ProfileInvestigatorsList({navigation}) {
 
   async function deleteInvestigator(item) {
     try {
+
+      //delete all item against profile asset
+      const { data: profileAssets } = await supabase
+      .from('profileAsset')
+      .select('*')
+      .eq('profileInvestigatorId', item);
+
+      for (const asset of profileAssets) {
+        const { error: deleteError } = await supabase
+          .from('profileAsset')
+          .delete()
+          .eq('id', asset.id);
+  
+        if (deleteError) {
+          throw deleteError;
+        }
+      }
+
       // Fetch data based on the userId and include all columns from the related 'Investigator' table
       const { error } = await supabase
         .from('profileInvestigators')
@@ -63,7 +81,7 @@ function ProfileInvestigatorsList({navigation}) {
         .eq('id', item);
   
       if (error) {
-        console.error('Error deleting data:', error.message);
+        console.error('Error deleting PROFILE:', error.message);
       } else {
         // Deletion was successful, refresh the data
         await refreshData();

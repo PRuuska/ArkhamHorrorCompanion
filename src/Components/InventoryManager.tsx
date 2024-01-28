@@ -79,7 +79,7 @@ export default function InventoryManager({item, setRefresh}) {
         if (error) {
             alert(error.message);
           } else {
-            setModalVisible(!modalVisible);
+            setModalVisible(false);
             setRefresh(true); // Trigger refresh in ProfileInventoryList
           }
     }
@@ -142,11 +142,14 @@ export default function InventoryManager({item, setRefresh}) {
                 <View style={styles.itemContainer}>
     
                         <View>
-                          <Text style={styles.InvestigatorTitle}>{item.name}</Text>
-                          <Text style={styles.InvestigatorTitle}>{item.type} - {item.subType}</Text>
-                          <Text style={styles.InvestigatorTitle}>Hands - {item.hands}</Text>
-
+                          <Text >{item.name}</Text>
+                          <Text >{item.type} - {item.subType}</Text>
                         </View>
+
+                <Pressable
+                    onPress={() => addAsset(item)}>
+                    <Text>Add</Text>
+                </Pressable>
 
                 </View>
 
